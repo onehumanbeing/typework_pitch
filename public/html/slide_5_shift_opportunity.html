@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>The Shift + The Opportunity</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1920px;
+    height: 1080px;
+    font-family: 'Inter', sans-serif;
+    background: #0b1120;
+    color: #ffffff;
+    overflow: hidden;
+  }
+
+  .slide {
+    width: 100%;
+    height: 100%;
+    padding: 48px 72px 64px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .logo { position: absolute; top: 44px; right: 72px; }
+  .logo img { height: 48px; }
+
+  .section-label {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: #00d2be;
+    margin-bottom: 10px;
+  }
+
+  .title {
+    font-size: 46px;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 24px;
+  }
+  .title .highlight { color: #00d2be; }
+
+  .content {
+    display: flex;
+    gap: 36px;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* ====== LEFT PANEL: The Shift ====== */
+  .panel-shift {
+    flex: 1;
+    background: rgba(255,255,255,0.02);
+    border: 1.5px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 28px 32px 24px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .panel-label {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #00d2be;
+    margin-bottom: 16px;
+    opacity: 0.8;
+  }
+
+  /* Two halves side by side */
+  .shift-halves {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    gap: 0;
+  }
+
+  .shift-half {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .shift-half-title {
+    font-size: 32px;
+    font-weight: 700;
+  }
+  .shift-half.linear .shift-half-title { color: rgba(255,255,255,0.5); }
+  .shift-half.networked .shift-half-title { color: #00d2be; }
+
+  .shift-half .diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .shift-half .stat-num {
+    font-size: 80px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .shift-half.linear .stat-num { color: rgba(255,255,255,0.35); }
+  .shift-half.networked .stat-num { color: #00d2be; }
+
+  .shift-half .stat-label {
+    font-size: 24px;
+    color: rgba(255,255,255,0.4);
+    font-weight: 500;
+    margin-top: -4px;
+  }
+
+  .shift-badge {
+    font-size: 24px;
+    font-weight: 700;
+    padding: 10px 30px;
+    border-radius: 28px;
+    background: rgba(0, 210, 190, 0.14);
+    color: #00d2be;
+  }
+
+  .shift-vs {
+    flex: 0 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .shift-vs span {
+    font-size: 26px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.15);
+  }
+
+  /* ====== RIGHT PANEL: The Opportunity ====== */
+  .panel-opp {
+    flex: 1;
+    background: rgba(255,255,255,0.02);
+    border: 1.5px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 28px 36px 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .opp-title {
+    font-size: 34px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .opp-subtitle {
+    font-size: 17px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 16px;
+  }
+
+  .bar-chart {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 50px;
+    position: relative;
+  }
+
+  .bar-chart::after {
+    content: '';
+    position: absolute;
+    bottom: 46px;
+    left: 0; right: 0;
+    height: 1.5px;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .bar-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .bar-value {
+    font-size: 26px;
+    font-weight: 800;
+    color: #00d2be;
+  }
+  .bar-value.big { font-size: 32px; }
+
+  .bar-rect {
+    width: 100%;
+    max-width: 100px;
+    border-radius: 8px 8px 0 0;
+    background: linear-gradient(180deg, #00d2be, #008f82);
+    min-height: 10px;
+  }
+
+  .bar-label {
+    font-size: 17px;
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    position: absolute;
+    bottom: -42px;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .bar-label strong {
+    color: rgba(255,255,255,0.75);
+    font-weight: 700;
+    font-size: 19px;
+  }
+
+  .opp-footer {
+    margin-top: 24px;
+    text-align: center;
+    padding: 16px 24px;
+    background: rgba(0, 210, 190, 0.06);
+    border: 1px solid rgba(0, 210, 190, 0.15);
+    border-radius: 14px;
+    font-size: 19px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.4;
+  }
+  .opp-footer strong { color: #00d2be; font-weight: 700; }
+
+  .bottom-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 56px;
+    background: rgba(0, 210, 190, 0.04);
+    border-top: 1px solid rgba(0, 210, 190, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bottom-text {
+    font-size: 19px;
+    font-weight: 600;
+    color: #00d2be;
+    opacity: 0.7;
+  }
+</style>
+</head>
+<body>
+  <div class="slide">
+    <div class="logo"><img src="Logo.png" alt="Typework"></div>
+
+    <div class="section-label">The Shift + The Opportunity</div>
+    <div class="title">From chains to networks. <span class="highlight">New economics, unlocked by AI.</span></div>
+
+    <div class="content">
+      <!-- LEFT: The Shift -->
+      <div class="panel-shift">
+        <div class="panel-label">The Shift</div>
+
+        <div class="shift-halves">
+          <!-- Linear -->
+          <div class="shift-half linear">
+            <div class="shift-half-title">Linear</div>
+            <div class="diagram">
+              <svg width="320" height="320" viewBox="0 0 320 320">
+                <!-- Row 1: 3 chained -->
+                <circle cx="60" cy="100" r="36" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="3"/>
+                <circle cx="160" cy="100" r="36" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="3"/>
+                <circle cx="260" cy="100" r="36" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="3"/>
+                <line x1="96" y1="100" x2="124" y2="100" stroke="rgba(255,255,255,0.25)" stroke-width="3.5"/>
+                <line x1="196" y1="100" x2="224" y2="100" stroke="rgba(255,255,255,0.25)" stroke-width="3.5"/>
+                <!-- Row 2: 3 chained -->
+                <circle cx="60" cy="220" r="36" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="3"/>
+                <circle cx="160" cy="220" r="36" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="3"/>
+                <circle cx="260" cy="220" r="36" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="3"/>
+                <line x1="96" y1="220" x2="124" y2="220" stroke="rgba(255,255,255,0.25)" stroke-width="3.5"/>
+                <line x1="196" y1="220" x2="224" y2="220" stroke="rgba(255,255,255,0.25)" stroke-width="3.5"/>
+              </svg>
+            </div>
+            <div class="stat-num">4</div>
+            <div class="stat-label">connections</div>
+          </div>
+
+          <!-- VS -->
+          <div class="shift-vs"><span>vs</span></div>
+
+          <!-- Networked -->
+          <div class="shift-half networked">
+            <div class="shift-half-title">Networked</div>
+            <div class="diagram">
+              <svg width="320" height="320" viewBox="0 0 320 320">
+                <!-- 15 connections -->
+                <line x1="160" y1="35" x2="50" y2="120" stroke="#00d2be" stroke-width="2.5" opacity="0.3"/>
+                <line x1="160" y1="35" x2="270" y2="120" stroke="#00d2be" stroke-width="2.5" opacity="0.3"/>
+                <line x1="160" y1="35" x2="80" y2="250" stroke="#00d2be" stroke-width="2.5" opacity="0.25"/>
+                <line x1="160" y1="35" x2="240" y2="250" stroke="#00d2be" stroke-width="2.5" opacity="0.25"/>
+                <line x1="160" y1="35" x2="160" y2="170" stroke="#00d2be" stroke-width="2" opacity="0.2"/>
+                <line x1="50" y1="120" x2="270" y2="120" stroke="#00d2be" stroke-width="2" opacity="0.2"/>
+                <line x1="50" y1="120" x2="160" y2="170" stroke="#00d2be" stroke-width="2.5" opacity="0.3"/>
+                <line x1="50" y1="120" x2="80" y2="250" stroke="#00d2be" stroke-width="2.5" opacity="0.25"/>
+                <line x1="50" y1="120" x2="240" y2="250" stroke="#00d2be" stroke-width="2" opacity="0.15"/>
+                <line x1="270" y1="120" x2="160" y2="170" stroke="#00d2be" stroke-width="2.5" opacity="0.3"/>
+                <line x1="270" y1="120" x2="240" y2="250" stroke="#00d2be" stroke-width="2.5" opacity="0.25"/>
+                <line x1="270" y1="120" x2="80" y2="250" stroke="#00d2be" stroke-width="2" opacity="0.15"/>
+                <line x1="160" y1="170" x2="80" y2="250" stroke="#00d2be" stroke-width="2.5" opacity="0.25"/>
+                <line x1="160" y1="170" x2="240" y2="250" stroke="#00d2be" stroke-width="2.5" opacity="0.25"/>
+                <line x1="80" y1="250" x2="240" y2="250" stroke="#00d2be" stroke-width="2.5" opacity="0.2"/>
+                <!-- Nodes -->
+                <circle cx="160" cy="35" r="36" fill="#00d2be" opacity="0.85"/>
+                <circle cx="50" cy="120" r="36" fill="#00d2be" opacity="0.75"/>
+                <circle cx="270" cy="120" r="36" fill="#00d2be" opacity="0.75"/>
+                <circle cx="160" cy="170" r="36" fill="#00d2be" opacity="0.8"/>
+                <circle cx="80" cy="250" r="36" fill="#00d2be" opacity="0.7"/>
+                <circle cx="240" cy="250" r="36" fill="#00d2be" opacity="0.7"/>
+              </svg>
+            </div>
+            <div class="stat-num">15</div>
+            <div class="stat-label">connections</div>
+            <div class="shift-badge">4.6x more opportunity</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: The Opportunity -->
+      <div class="panel-opp">
+        <div class="panel-label">The Opportunity</div>
+        <div class="opp-title">Connections scale exponentially.</div>
+        <div class="opp-subtitle">New economics multipliers unlocked by AI agents</div>
+
+        <div class="bar-chart">
+          <div class="bar-item">
+            <div class="bar-value">10</div>
+            <div class="bar-rect" style="height: 20px;"></div>
+            <div class="bar-label"><strong>5</strong><br>businesses</div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-value">45</div>
+            <div class="bar-rect" style="height: 42px;"></div>
+            <div class="bar-label"><strong>10</strong><br>businesses</div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-value">300</div>
+            <div class="bar-rect" style="height: 90px;"></div>
+            <div class="bar-label"><strong>25</strong><br>businesses</div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-value">1,225</div>
+            <div class="bar-rect" style="height: 165px;"></div>
+            <div class="bar-label"><strong>50</strong><br>businesses</div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-value big">4,950</div>
+            <div class="bar-rect" style="height: 300px;"></div>
+            <div class="bar-label"><strong>100</strong><br>businesses</div>
+          </div>
+        </div>
+
+        <div class="opp-footer">
+          A local network of just <strong>100 businesses</strong> creates <strong>4,950 potential synergies</strong>.<br>
+          That's 4,950 revenue opportunities that <strong>don't exist today</strong>.
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-text">Typework transforms every industry from chains into networks.</div>
+    </div>
+  </div>
+</body>
+</html>

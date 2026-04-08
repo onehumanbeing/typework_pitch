@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>Competitive Landscape</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1920px; height: 1080px;
+    font-family: 'Inter', sans-serif;
+    background: #0b1120; color: #fff; overflow: hidden;
+  }
+  body::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 35% 55%, rgba(0,210,190,0.04) 0%, transparent 55%);
+    pointer-events: none;
+  }
+
+  .slide {
+    width: 100%; height: 100%;
+    padding: 56px 80px 50px;
+    display: flex; flex-direction: column; position: relative;
+  }
+  .logo { position: absolute; top: 50px; right: 80px; }
+  .logo img { height: 48px; }
+
+  .section-label {
+    font-size: 18px; font-weight: 600; letter-spacing: 5px;
+    text-transform: uppercase; color: #00d2be; margin-bottom: 14px;
+  }
+  .title {
+    font-size: 56px; font-weight: 700; line-height: 1.15; margin-bottom: 36px;
+  }
+
+  /* ── Two-column: grid left, cards right ── */
+  .content { display: flex; gap: 50px; flex: 1; }
+
+  /* ── Left: 2×2 quadrant ── */
+  .quadrant {
+    flex: 0 0 680px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .zone {
+    border-radius: 16px;
+    padding: 24px 28px;
+    display: flex; flex-direction: column;
+  }
+  .zone-dim {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .zone-label {
+    font-size: 12px; font-weight: 700; letter-spacing: 2.5px;
+    text-transform: uppercase; color: rgba(255,255,255,0.25);
+    margin-bottom: 16px;
+  }
+
+  .zone-name {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 18px; font-weight: 500; color: rgba(255,255,255,0.45);
+    margin-bottom: 10px;
+  }
+  .zone-name .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    border: 1.5px solid rgba(255,255,255,0.2);
+    flex-shrink: 0;
+  }
+
+  /* Top-right: Typework zone */
+  .zone-tw {
+    background: rgba(0,210,190,0.06);
+    border: 1.5px solid rgba(0,210,190,0.2);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 14px;
+  }
+  .zone-tw .zone-label {
+    color: rgba(0,210,190,0.5);
+    text-align: center;
+  }
+
+  .tw-circle {
+    width: 90px; height: 90px; border-radius: 50%;
+    background: linear-gradient(135deg, #00d2be, #009e90);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; color: #0b1120; letter-spacing: 1px;
+    box-shadow: 0 0 50px rgba(0,210,190,0.25);
+    position: relative;
+  }
+  .tw-circle::before {
+    content: '';
+    position: absolute;
+    width: 116px; height: 116px; border-radius: 50%;
+    border: 1.5px solid rgba(0,210,190,0.15);
+  }
+
+  .tw-tags {
+    display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+  }
+  .tw-tag {
+    font-size: 12px; font-weight: 600; color: rgba(0,210,190,0.6);
+    background: rgba(0,210,190,0.08);
+    border: 1px solid rgba(0,210,190,0.15);
+    border-radius: 20px; padding: 4px 14px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── Right: cards ── */
+  .cards {
+    flex: 1; display: flex; flex-direction: column;
+    justify-content: center; gap: 22px;
+  }
+  .comp-card {
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px; padding: 26px 32px;
+  }
+  .comp-card h3 {
+    font-size: 24px; font-weight: 700; margin-bottom: 3px;
+  }
+  .comp-names {
+    font-size: 15px; color: rgba(255,255,255,0.3);
+    margin-bottom: 10px; font-style: italic;
+  }
+  .comp-desc {
+    font-size: 17px; color: rgba(255,255,255,0.5);
+    line-height: 1.5; margin-bottom: 8px;
+  }
+  .comp-verdict {
+    font-size: 16px; font-weight: 600; color: rgba(255,77,106,0.7);
+  }
+  .comp-verdict::before { content: '→ '; }
+
+  /* ── Bottom ── */
+  .bottom-bar {
+    margin-top: 24px; display: flex; flex-direction: column;
+    align-items: center; gap: 10px;
+  }
+  .formula {
+    font-size: 26px; font-weight: 700;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .formula .brand { color: #00d2be; font-weight: 800; }
+  .formula .eq { color: rgba(255,255,255,0.5); }
+  .formula .plus { color: rgba(255,255,255,0.25); font-weight: 400; }
+  .bottom-sub {
+    font-size: 17px; color: rgba(255,255,255,0.35);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="logo"><img src="Logo.png" alt="Typework"></div>
+  <div class="section-label">Competitive Landscape</div>
+  <div class="title">Where Others Stop, We Start.</div>
+
+  <div class="content">
+    <div class="quadrant">
+      <!-- Top-left: AI Agents -->
+      <div class="zone zone-dim">
+        <div class="zone-label">AI Agents</div>
+        <div class="zone-name"><span class="dot"></span> Lindy AI</div>
+        <div class="zone-name"><span class="dot"></span> Relevance AI</div>
+        <div class="zone-name"><span class="dot"></span> Zapier AI</div>
+      </div>
+      <!-- Top-right: Typework -->
+      <div class="zone zone-tw">
+        <div class="zone-label">AI + Network</div>
+        <div class="tw-circle">TYPEWORK</div>
+        <div class="tw-tags">
+          <span class="tw-tag">AI Agents</span>
+          <span class="tw-tag">Network</span>
+          <span class="tw-tag">Zero Code</span>
+        </div>
+      </div>
+      <!-- Bottom-left: Legacy SaaS -->
+      <div class="zone zone-dim">
+        <div class="zone-label">Legacy SaaS</div>
+        <div class="zone-name"><span class="dot"></span> Odoo</div>
+        <div class="zone-name"><span class="dot"></span> ServiceTitan</div>
+        <div class="zone-name"><span class="dot"></span> SAP</div>
+      </div>
+      <!-- Bottom-right: Marketplaces -->
+      <div class="zone zone-dim">
+        <div class="zone-label">Marketplaces</div>
+        <div class="zone-name"><span class="dot"></span> Thumbtack</div>
+        <div class="zone-name"><span class="dot"></span> Angi</div>
+        <div class="zone-name"><span class="dot"></span> Upwork</div>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="comp-card">
+        <h3>AI Agent Platforms</h3>
+        <div class="comp-names">Lindy, Zapier AI, Relevance AI</div>
+        <div class="comp-desc">Automate tasks for one business. No cross-business network or intelligence.</div>
+        <div class="comp-verdict">Single-player tools</div>
+      </div>
+      <div class="comp-card">
+        <h3>B2B Marketplaces</h3>
+        <div class="comp-names">Thumbtack, Angi, Upwork</div>
+        <div class="comp-desc">Match buyers to sellers. No AI agent layer, no workflow automation.</div>
+        <div class="comp-verdict">Static matchmaking</div>
+      </div>
+      <div class="comp-card">
+        <h3>Legacy SaaS / ERP</h3>
+        <div class="comp-names">Odoo, ServiceTitan, SAP</div>
+        <div class="comp-desc">Digitize operations inside one company. Rigid config, no network effects.</div>
+        <div class="comp-verdict">Inward-facing silos</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <div class="formula">
+      <span class="brand">Typework</span><span class="eq">=</span>
+      <span>AI Agents</span><span class="plus">+</span>
+      <span>Business Network</span><span class="plus">+</span>
+      <span>Zero Code</span>
+    </div>
+    <div class="bottom-sub">The only platform where every business gets an AI agent that joins an intelligent, self-growing network.</div>
+  </div>
+</div>
+</body>
+</html>

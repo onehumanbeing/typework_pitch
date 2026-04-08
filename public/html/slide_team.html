@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>Core Team</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1920px; height: 1080px;
+    font-family: 'Inter', sans-serif;
+    background: #0b1120; color: #fff; overflow: hidden;
+  }
+
+  .slide {
+    width: 100%; height: 100%;
+    padding: 48px 80px 40px;
+    display: flex; flex-direction: column;
+  }
+
+  /* ── Header row: title + logos ── */
+  .header {
+    display: flex; align-items: center; gap: 40px;
+    margin-bottom: 36px;
+  }
+  .title {
+    font-size: 52px; font-weight: 800; white-space: nowrap;
+  }
+  .logos {
+    display: flex; align-items: center; gap: 24px;
+    flex-wrap: wrap;
+  }
+  .logos img {
+    height: 32px; opacity: 0.55;
+    filter: grayscale(30%);
+  }
+
+  /* ── Team grid: 2 rows ── */
+  .team {
+    flex: 1; display: flex; flex-direction: column;
+    gap: 28px; justify-content: center;
+  }
+
+  .row {
+    display: flex; gap: 32px; justify-content: center;
+  }
+
+  /* ── Person card ── */
+  .person {
+    flex: 0 0 270px;
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center;
+  }
+
+  .avatar {
+    width: 130px; height: 130px; border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255,255,255,0.08);
+    margin-bottom: 14px;
+  }
+
+  .name {
+    font-size: 22px; font-weight: 700; margin-bottom: 2px;
+  }
+  .role {
+    font-size: 15px; font-weight: 600; color: #00d2be;
+    letter-spacing: 0.5px; margin-bottom: 10px;
+  }
+
+  .bio {
+    font-size: 14px; color: rgba(255,255,255,0.4);
+    line-height: 1.5;
+  }
+  .bio strong {
+    color: rgba(255,255,255,0.65); font-weight: 600;
+  }
+
+  /* Founder row — larger */
+  .row-founders .person { flex: 0 0 380px; }
+  .row-founders .avatar { width: 150px; height: 150px; }
+  .row-founders .name { font-size: 26px; }
+  .row-founders .role { font-size: 16px; }
+  .row-founders .bio { font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="header">
+    <div class="title">Core Team</div>
+    <div class="logos">
+      <img src="team/logo-nyu.png" alt="NYU">
+      <img src="team/logo-tencent.png" alt="Tencent">
+      <img src="team/logo-epam.png" alt="EPAM">
+      <img src="team/logo-hulu.png" alt="Hulu">
+      <img src="team/logo-bytedance.png" alt="ByteDance">
+      <img src="team/logo-cambridge.png" alt="Cambridge">
+      <img src="team/logo-mihoyo.png" alt="miHoYo">
+    </div>
+  </div>
+
+  <div class="team">
+    <!-- Row 1: Founders -->
+    <div class="row row-founders">
+      <div class="person">
+        <img class="avatar" src="team/henry.jpg" alt="Henry">
+        <div class="name">Henry</div>
+        <div class="role">Founder, CEO</div>
+        <div class="bio">
+          Ex-Tencent · NYU alumni<br>
+          <strong>11-year developer · 7-year entrepreneur</strong><br>
+          Launched software with 1M+ users<br>
+          Winner of AdventureX
+        </div>
+      </div>
+      <div class="person">
+        <img class="avatar" src="team/james.png" alt="James">
+        <div class="name">James</div>
+        <div class="role">Cofounder, CPO</div>
+        <div class="bio">
+          High school dropout · Serial entrepreneur<br>
+          <strong>3-year experience in local services & supply chain</strong><br>
+          Founded 8-figure business<br>
+          Winner of AdventureX
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: Core team -->
+    <div class="row">
+      <div class="person">
+        <img class="avatar" src="team/feilong.jpg" alt="Fei Long">
+        <div class="name">Fei Long</div>
+        <div class="role">CTO</div>
+        <div class="bio">
+          <strong>PyGWalker: 15K+ GitHub stars</strong><br>
+          Open-source Tableau alternative<br>
+          Ex-Hulu · External Tech Specialist — ByteDance
+        </div>
+      </div>
+      <div class="person">
+        <img class="avatar" src="team/frank.png" alt="Frank">
+        <div class="name">Frank</div>
+        <div class="role">Strategy & Operations</div>
+        <div class="bio">
+          Ex-VC investor · Tsinghua alumni<br>
+          Ex-Megvii | Ex-Xiaoice<br>
+          <strong>7-year experience in strategy & investment</strong>
+        </div>
+      </div>
+      <div class="person">
+        <img class="avatar" src="team/sidi.png" alt="Sidi">
+        <div class="name">Sidi</div>
+        <div class="role">AI Tech Lead</div>
+        <div class="bio">
+          Full-stack Expert · Ex-EPAM<br>
+          <strong>8 years in AI Engineering & B2B</strong><br>
+          CTO of iFlytek-invested AI Startup
+        </div>
+      </div>
+      <div class="person">
+        <img class="avatar" src="team/diane.jpg" alt="Diane">
+        <div class="name">Diane</div>
+        <div class="role">Sales & Marketing</div>
+        <div class="bio">
+          Cambridge Alumni<br>
+          <strong>Founder @ EmpowerfulHer</strong><br>
+          Watson Institute Fellow · Social Entrepreneur
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>Market Size + Who Joins First</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1920px;
+    height: 1080px;
+    font-family: 'Inter', sans-serif;
+    background: #0b1120;
+    color: #ffffff;
+    overflow: hidden;
+  }
+
+  .slide {
+    width: 100%;
+    height: 100%;
+    padding: 48px 72px 64px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .logo { position: absolute; top: 44px; right: 72px; }
+  .logo img { height: 48px; }
+
+  .section-label {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: #00d2be;
+    margin-bottom: 10px;
+  }
+
+  .title {
+    font-size: 46px;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 28px;
+  }
+  .title .highlight { color: #00d2be; }
+
+  .content {
+    display: flex;
+    gap: 36px;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* ====== LEFT PANEL: Market Size ====== */
+  .panel-market {
+    flex: 0 0 46%;
+    background: rgba(255,255,255,0.02);
+    border: 1.5px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 40px 48px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .big-number {
+    font-size: 140px;
+    font-weight: 900;
+    color: #00d2be;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .big-label {
+    font-size: 34px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.25;
+    margin-bottom: 10px;
+  }
+
+  .big-sub {
+    font-size: 22px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.5;
+    max-width: 560px;
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+  .big-sub strong {
+    color: #00d2be;
+    font-weight: 700;
+  }
+
+  .curve-wrap {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 220px;
+    pointer-events: none;
+  }
+
+  /* ====== RIGHT PANEL: Who Joins First ====== */
+  .panel-icp {
+    flex: 1;
+    background: rgba(255,255,255,0.02);
+    border: 1.5px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 36px 44px 32px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .panel-label {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #00d2be;
+    margin-bottom: 20px;
+    opacity: 0.8;
+  }
+
+  .icp-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    flex: 1;
+  }
+
+  .icp-card {
+    background: rgba(0, 210, 190, 0.04);
+    border: 1.5px solid rgba(0, 210, 190, 0.12);
+    border-radius: 16px;
+    padding: 22px 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .icp-icon {
+    flex: 0 0 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: rgba(0, 210, 190, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .icp-icon svg {
+    width: 28px;
+    height: 28px;
+    stroke: #00d2be;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .icp-text {
+    flex: 1;
+  }
+
+  .icp-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+
+  .icp-desc {
+    font-size: 20px;
+    color: rgba(255,255,255,0.45);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+
+  /* Bottom bar */
+  .bottom-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 56px;
+    background: rgba(0, 210, 190, 0.04);
+    border-top: 1px solid rgba(0, 210, 190, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bottom-text {
+    font-size: 19px;
+    font-weight: 600;
+    color: #00d2be;
+    opacity: 0.7;
+  }
+</style>
+</head>
+<body>
+  <div class="slide">
+    <div class="logo"><img src="Logo.png" alt="Typework"></div>
+
+    <div class="section-label">Market Size + Who Joins First</div>
+    <div class="title">The opportunity is <span class="highlight">massive</span> — and we know exactly where to start.</div>
+
+    <div class="content">
+      <!-- LEFT: Market Size -->
+      <div class="panel-market">
+        <div class="big-number">95%</div>
+        <div class="big-label">of all businesses<br>are SMEs</div>
+        <div class="big-sub">They all share the <strong>same scaling problem</strong>.<br>This is a global, horizontal market.</div>
+
+        <div class="curve-wrap">
+          <svg viewBox="0 0 700 220" width="100%" height="100%" preserveAspectRatio="none">
+            <!-- Revenue curve: peak then long decline -->
+            <path d="M0,180 C50,165 120,80 240,35 C300,15 330,14 360,18 C440,38 520,85 600,140 C650,165 680,178 700,185"
+                  fill="none" stroke="#ff4d6a" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+            <!-- Fill under curve -->
+            <path d="M0,180 C50,165 120,80 240,35 C300,15 330,14 360,18 C440,38 520,85 600,140 C650,165 680,178 700,185 L700,220 L0,220 Z"
+                  fill="url(#plGrad)" opacity="0.3"/>
+            <!-- Peak dot -->
+            <circle cx="335" cy="15" r="5" fill="#ff4d6a" opacity="0.7"/>
+            <text x="348" y="20" font-size="14" font-weight="700" fill="#ff4d6a" font-family="Inter" opacity="0.6">peak</text>
+            <!-- OPEX dashed rising -->
+            <path d="M0,190 C150,180 350,160 500,135 C600,115 660,100 700,90"
+                  fill="none" stroke="#ff4d6a" stroke-width="2" stroke-dasharray="8,5" opacity="0.3"/>
+            <defs>
+              <linearGradient id="plGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ff4d6a" stop-opacity="0.35"/>
+                <stop offset="100%" stop-color="#ff4d6a" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+      </div>
+
+      <!-- RIGHT: Who Joins First -->
+      <div class="panel-icp">
+        <div class="panel-label">Who Joins First</div>
+
+        <div class="icp-cards">
+          <div class="icp-card">
+            <div class="icp-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+            <div class="icp-text">
+              <div class="icp-title">P&L has been declining</div>
+              <div class="icp-desc">Traditional businesses feeling the squeeze — costs up, margins down</div>
+            </div>
+          </div>
+
+          <div class="icp-card">
+            <div class="icp-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
+            <div class="icp-text">
+              <div class="icp-title">They know what good looks like</div>
+              <div class="icp-desc">They've made money before — they remember the good days</div>
+            </div>
+          </div>
+
+          <div class="icp-card">
+            <div class="icp-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div class="icp-text">
+              <div class="icp-title">The boss is the buyer</div>
+              <div class="icp-desc">Top-down decision — the boss feels the pain, the boss makes the call</div>
+            </div>
+          </div>
+
+          <div class="icp-card">
+            <div class="icp-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+            <div class="icp-text">
+              <div class="icp-title">Willing to invest in a solution</div>
+              <div class="icp-desc">They'll pay for hope — because the alternative is decline</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-text">Direct to decision-maker. Top-down. No committee.</div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>Traction</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1920px; height: 1080px;
+    font-family: 'Inter', sans-serif;
+    background: #0b1120; color: #fff; overflow: hidden;
+  }
+  .slide {
+    width: 100%; height: 100%;
+    padding: 48px 72px 64px;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .logo { position: absolute; top: 44px; right: 72px; }
+  .logo img { height: 48px; }
+  .section-label {
+    font-size: 15px; font-weight: 600; letter-spacing: 5px;
+    text-transform: uppercase; color: #00d2be; margin-bottom: 10px;
+  }
+  .title {
+    font-size: 48px; font-weight: 700; line-height: 1.15; margin-bottom: 48px;
+  }
+  .title .highlight { color: #00d2be; }
+
+  /* Three big metric cards */
+  .metrics {
+    display: flex; gap: 32px; margin-bottom: 48px;
+  }
+  .metric-card {
+    flex: 1;
+    background: rgba(255,255,255,0.02);
+    border: 1.5px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 44px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .metric-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 4px; background: #00d2be; opacity: 0.5;
+    border-radius: 20px 20px 0 0;
+  }
+  .metric-number {
+    font-size: 96px; font-weight: 900; color: #00d2be;
+    line-height: 1; margin-bottom: 12px;
+  }
+  .metric-unit {
+    font-size: 36px; font-weight: 300;
+  }
+  .metric-label {
+    font-size: 26px; font-weight: 700; color: #fff;
+    margin-bottom: 8px; line-height: 1.3;
+  }
+  .metric-desc {
+    font-size: 20px; font-weight: 500;
+    color: rgba(255,255,255,0.4); line-height: 1.5;
+  }
+
+  /* Status bar */
+  .status-row {
+    display: flex; gap: 24px; align-items: stretch;
+  }
+  .status-card {
+    flex: 1;
+    background: rgba(0,210,190,0.04);
+    border: 1.5px solid rgba(0,210,190,0.1);
+    border-radius: 16px;
+    padding: 28px 36px;
+    display: flex; align-items: center; gap: 20px;
+  }
+  .status-icon {
+    flex: 0 0 52px; height: 52px;
+    border-radius: 14px;
+    background: rgba(0,210,190,0.1);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .status-icon svg {
+    width: 26px; height: 26px;
+    stroke: #00d2be; fill: none;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  }
+  .status-text {
+    flex: 1;
+  }
+  .status-title {
+    font-size: 24px; font-weight: 700; color: #fff;
+    margin-bottom: 4px;
+  }
+  .status-desc {
+    font-size: 19px; font-weight: 500; color: rgba(255,255,255,0.4);
+    line-height: 1.4;
+  }
+  .status-desc strong { color: #00d2be; font-weight: 700; }
+
+  /* Bottom bar */
+  .bottom-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 56px;
+    background: rgba(0,210,190,0.04);
+    border-top: 1px solid rgba(0,210,190,0.08);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .bottom-text {
+    font-size: 19px; font-weight: 600; color: #00d2be; opacity: 0.7;
+  }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="logo"><img src="Logo.png" alt="Typework"></div>
+  <div class="section-label">Traction</div>
+  <div class="title">We're not just building — we're <span class="highlight">already in market</span>.</div>
+
+  <div class="metrics">
+    <div class="metric-card">
+      <div class="metric-number">~20</div>
+      <div class="metric-label">Companies in Pipeline</div>
+      <div class="metric-desc">LOIs signed and moving forward</div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-number">Live</div>
+      <div class="metric-label">Pilots Deploying</div>
+      <div class="metric-desc">Multiple customers signed and actively deploying</div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-number">1,500<span class="metric-unit">+</span></div>
+      <div class="metric-label">Employee Organization</div>
+      <div class="metric-desc">Early enterprise traction — HK public sector</div>
+    </div>
+  </div>
+
+  <div class="status-row">
+    <div class="status-card">
+      <div class="status-icon">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="status-text">
+        <div class="status-title">Product is live</div>
+        <div class="status-desc">Real customers, real workflows, <strong>real revenue potential</strong></div>
+      </div>
+    </div>
+    <div class="status-card">
+      <div class="status-icon">
+        <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+      </div>
+      <div class="status-text">
+        <div class="status-title">Demand is pulling us</div>
+        <div class="status-desc">Inbound interest from SMEs across <strong>multiple industries</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <div class="bottom-text">The demand is real. The traction is early — but it's compounding.</div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,59 +1,139 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+
+/* ── Password gate ─────────────────────────────────────── */
+const PASS = 'typework2026'
+
+function useAuth() {
+  return useMemo(() => {
+    const params = new URLSearchParams(window.location.search)
+    return params.get('passwd') === PASS
+  }, [])
+}
+
+function LockScreen() {
+  const [input, setInput] = useState('')
+  const [error, setError] = useState(false)
+  const submit = (e) => {
+    e.preventDefault()
+    if (input === PASS) {
+      window.location.search = `?passwd=${PASS}`
+    } else {
+      setError(true)
+      setTimeout(() => setError(false), 1500)
+    }
+  }
+  return (
+    <div style={{
+      width:'100vw',height:'100vh',background:'#0a0e1a',
+      display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',
+      fontFamily:"'Inter',sans-serif",color:'#fff',
+    }}>
+      <div style={{fontSize:18,fontWeight:600,letterSpacing:4,color:'#00d2be',marginBottom:24,textTransform:'uppercase'}}>
+        Typework Pitch
+      </div>
+      <form onSubmit={submit} style={{display:'flex',gap:12}}>
+        <input
+          type="password"
+          value={input}
+          onChange={e=>setInput(e.target.value)}
+          placeholder="Enter password"
+          autoFocus
+          style={{
+            background:'rgba(255,255,255,0.06)',border: error ? '1.5px solid #ff4d6a' : '1.5px solid rgba(255,255,255,0.1)',
+            borderRadius:10,padding:'12px 20px',fontSize:16,color:'#fff',outline:'none',width:260,
+            transition:'border-color 0.2s',
+          }}
+        />
+        <button type="submit" style={{
+          background:'#00d2be',border:'none',borderRadius:10,padding:'12px 24px',
+          fontSize:16,fontWeight:700,color:'#0b1120',cursor:'pointer',
+        }}>Enter</button>
+      </form>
+      {error && <div style={{marginTop:14,fontSize:14,color:'#ff4d6a'}}>Wrong password</div>}
+    </div>
+  )
+}
 
 /*
-  Slide map
-  ─────────
-  Indices 0-3  → video slides  (slide1–4.mp4)
-  Index   4    → slide_5_market_who_joins.png
-  Index   5    → 7.png  (What Typework Does)
-  Indices 6-15 → PPTX exports  slide-07…slide-16
+  Slide types: 'video' | 'image' | 'html'
+
+  Flow:
+  0-3   → video (slide1–4.mp4)
+  4     → html  (slide_5_market_who_joins)
+  5     → html  (slide_what_typework_does)
+  6     → html  (slide_5_shift_opportunity)
+  7     → image (IX Catering — PPTX slide 9)
+  8     → image (Property Management — PPTX slide 10)
+  9     → image (Wedding & Event — PPTX slide 11)
+  10    → image (Competitive Landscape — PPTX slide 12)
+  11    → html  (slide_moat)
+  12    → html  (slide_why_now)
+  13    → image (Team — PPTX slide 15)
+  14    → html  (slide_traction)
+  15    → image (Closing — PPTX slide 17)
 */
 
-const VIDEO_SLIDES = [
-  '/videos/slide1.mp4',
-  '/videos/slide2.mp4',
-  '/videos/slide3.mp4',
-  '/videos/slide4.mp4',
+const SLIDES = [
+  { type: 'video', src: '/videos/slide1.mp4' },
+  { type: 'video', src: '/videos/slide2.mp4' },
+  { type: 'video', src: '/videos/slide3.mp4' },
+  { type: 'video', src: '/videos/slide4.mp4' },
+  { type: 'html',  src: '/html/slide_5_market_who_joins.html' },
+  { type: 'html',  src: '/html/slide_what_typework_does.html' },
+  { type: 'html',  src: '/html/slide_5_shift_opportunity.html' },
+  { type: 'image', src: '/slides/slide-08.jpg' },
+  { type: 'image', src: '/slides/slide-09.jpg' },
+  { type: 'image', src: '/slides/slide-10.jpg' },
+  { type: 'html',  src: '/html/slide_competitive.html' },
+  { type: 'html',  src: '/html/slide_moat.html' },
+  { type: 'html',  src: '/html/slide_why_now.html' },
+  { type: 'html',  src: '/html/slide_team.html' },
+  { type: 'html',  src: '/html/slide_traction.html' },
+  { type: 'image', src: '/slides/slide-16.jpg' },
 ]
 
-const IMAGE_SLIDES = [
-  '/slides/slide-05.png',
-  '/slides/slide-06.png',
-  '/slides/slide-07.jpg',
-  '/slides/slide-08.jpg',
-  '/slides/slide-09.jpg',
-  '/slides/slide-10.jpg',
-  '/slides/slide-11.jpg',
-  '/slides/slide-12.jpg',
-  '/slides/slide-13.jpg',
-  '/slides/slide-14.jpg',
-  '/slides/slide-15.jpg',
-  '/slides/slide-16.jpg',
-]
-
-const TOTAL = VIDEO_SLIDES.length + IMAGE_SLIDES.length // 16
+const TOTAL = SLIDES.length
+const LAST_VIDEO_INDEX = 3
 
 export default function App() {
+  const authed = useAuth()
+  if (!authed) return <LockScreen />
+  return <PitchDeck />
+}
+
+function PitchDeck() {
   const [current, setCurrent] = useState(0)
-  // For video slides: 'poster' = first frame, 'playing' = running, 'ended' = last frame
   const [videoState, setVideoState] = useState('poster')
   const videoRef = useRef(null)
   const containerRef = useRef(null)
 
-  const isVideo = current < VIDEO_SLIDES.length
-  const isLastVideo = current === VIDEO_SLIDES.length - 1
+  const [jumpInput, setJumpInput] = useState('')
+  const jumpTimer = useRef(null)
+
+  const slide = SLIDES[current]
+  const isVideo = slide.type === 'video'
+
+  /* ── iframe scaling to fit viewport ─────────────────── */
+  const [iframeScale, setIframeScale] = useState(1)
+  useEffect(() => {
+    const calcScale = () => {
+      const sx = window.innerWidth / 1920
+      const sy = window.innerHeight / 1080
+      setIframeScale(Math.min(sx, sy))
+    }
+    calcScale()
+    window.addEventListener('resize', calcScale)
+    return () => window.removeEventListener('resize', calcScale)
+  }, [])
 
   /* ── navigation ─────────────────────────────────────── */
   const goNext = useCallback(() => {
     if (isVideo && videoState === 'poster') {
-      // First click on a video slide → play the video
       setVideoState('playing')
       videoRef.current?.play()
       return
     }
-    // If video is still playing, ignore (let it finish)
     if (isVideo && videoState === 'playing') return
-    // 'ended' or image slide → advance
     if (current < TOTAL - 1) {
       setCurrent(c => c + 1)
       setVideoState('poster')
@@ -67,17 +147,49 @@ export default function App() {
     }
   }, [current])
 
-  /* ── keyboard ───────────────────────────────────────── */
-  // Presentation clickers typically send: PageDown/PageUp, ArrowRight/ArrowLeft,
-  // Space, Enter. Some also send F5 (start) or 'b'/period (blank).
+  /* ── jump to slide: type number + Enter ──────────────── */
+  const goTo = useCallback((n) => {
+    const idx = Math.max(0, Math.min(n - 1, TOTAL - 1))
+    setCurrent(idx)
+    setVideoState('poster')
+  }, [])
+
+  /* ── keyboard (supports presentation clickers) ──────── */
   useEffect(() => {
     const onKey = (e) => {
+      // Number keys → accumulate for jump (e.g. "1" "2" → slide 12)
+      if (/^[0-9]$/.test(e.key)) {
+        e.preventDefault()
+        setJumpInput(prev => prev + e.key)
+        clearTimeout(jumpTimer.current)
+        // Auto-clear after 1.5s if no Enter pressed
+        jumpTimer.current = setTimeout(() => setJumpInput(''), 1500)
+        return
+      }
+
+      // Enter with pending number → jump
+      if (e.key === 'Enter' && jumpInput) {
+        e.preventDefault()
+        goTo(parseInt(jumpInput, 10))
+        setJumpInput('')
+        clearTimeout(jumpTimer.current)
+        return
+      }
+
       if (['ArrowRight', ' ', 'Enter', 'PageDown', 'ArrowDown'].includes(e.key)) {
         e.preventDefault()
         goNext()
       } else if (['ArrowLeft', 'Backspace', 'PageUp', 'ArrowUp'].includes(e.key)) {
         e.preventDefault()
         goPrev()
+      } else if (e.key === 'Escape') {
+        // Cancel jump input or exit fullscreen
+        if (jumpInput) {
+          setJumpInput('')
+          clearTimeout(jumpTimer.current)
+        } else if (document.fullscreenElement) {
+          document.exitFullscreen()
+        }
       } else if (e.key === 'f' || e.key === 'F') {
         if (!document.fullscreenElement) {
           containerRef.current?.requestFullscreen()
@@ -85,28 +197,25 @@ export default function App() {
           document.exitFullscreen()
         }
       } else if (e.key === 'F5') {
-        // Some clickers send F5 to start — go fullscreen
         e.preventDefault()
         containerRef.current?.requestFullscreen()
       }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [goNext, goPrev])
+  }, [goNext, goPrev, goTo, jumpInput])
 
   /* ── video ended ────────────────────────────────────── */
   const onVideoEnded = useCallback(() => {
-    if (isLastVideo) {
-      // Last video: freeze on final frame, wait for user to advance
+    if (current === LAST_VIDEO_INDEX) {
       setVideoState('ended')
     } else if (current < TOTAL - 1) {
-      // Other videos: auto-advance to next slide (whose first frame = this video's last frame)
       setCurrent(c => c + 1)
       setVideoState('poster')
     }
-  }, [current, isLastVideo])
+  }, [current])
 
-  /* ── touch / swipe support ──────────────────────────── */
+  /* ── touch / swipe ──────────────────────────────────── */
   const touchStart = useRef(null)
   const onTouchStart = (e) => { touchStart.current = e.touches[0].clientX }
   const onTouchEnd = (e) => {
@@ -117,8 +226,52 @@ export default function App() {
     touchStart.current = null
   }
 
-  /* ── render ─────────────────────────────────────────── */
-  const imageIndex = current - VIDEO_SLIDES.length
+  /* ── render slide content ───────────────────────────── */
+  const renderSlide = () => {
+    if (slide.type === 'video') {
+      return (
+        <video
+          ref={videoRef}
+          key={slide.src}
+          src={slide.src}
+          style={styles.media}
+          playsInline
+          preload="auto"
+          onEnded={onVideoEnded}
+        />
+      )
+    }
+
+    if (slide.type === 'html') {
+      return (
+        <div style={styles.iframeContainer}>
+          <iframe
+            key={slide.src}
+            src={slide.src}
+            style={{
+              ...styles.iframe,
+              transform: `scale(${iframeScale})`,
+            }}
+            title={`Slide ${current + 1}`}
+            sandbox="allow-same-origin"
+            scrolling="no"
+          />
+          {/* Transparent overlay to capture clicks/prevent iframe stealing focus */}
+          <div style={styles.iframeOverlay} />
+        </div>
+      )
+    }
+
+    return (
+      <img
+        key={slide.src}
+        src={slide.src}
+        alt={`Slide ${current + 1}`}
+        style={styles.media}
+        draggable={false}
+      />
+    )
+  }
 
   return (
     <div
@@ -128,29 +281,8 @@ export default function App() {
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
-      {/* Slide area */}
       <div style={styles.slideWrapper}>
-        {isVideo ? (
-          <video
-            ref={videoRef}
-            key={VIDEO_SLIDES[current]}
-            src={VIDEO_SLIDES[current]}
-            style={styles.media}
-            playsInline
-            preload="auto"
-            muted={false}
-            onEnded={onVideoEnded}
-          />
-        ) : (
-          <img
-            key={IMAGE_SLIDES[imageIndex]}
-            src={IMAGE_SLIDES[imageIndex]}
-            alt={`Slide ${current + 1}`}
-            style={styles.media}
-            draggable={false}
-          />
-        )}
-
+        {renderSlide()}
       </div>
 
       {/* Progress bar */}
@@ -168,7 +300,14 @@ export default function App() {
         {current + 1} / {TOTAL}
       </div>
 
-      {/* Nav arrows (desktop) */}
+      {/* Jump input indicator */}
+      {jumpInput && (
+        <div style={styles.jumpBadge}>
+          Go to: <strong>{jumpInput}</strong> ↵
+        </div>
+      )}
+
+      {/* Nav arrows */}
       <button
         style={{ ...styles.arrow, left: 16, opacity: current === 0 ? 0.2 : 1 }}
         onClick={(e) => { e.stopPropagation(); goPrev() }}
@@ -216,6 +355,27 @@ const styles = {
     objectFit: 'contain',
     display: 'block',
   },
+  iframeContainer: {
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iframe: {
+    width: '1920px',
+    height: '1080px',
+    border: 'none',
+    transformOrigin: 'center center',
+    /* Scale down to fit viewport — CSS will handle via JS below */
+    position: 'absolute',
+  },
+  iframeOverlay: {
+    position: 'absolute',
+    inset: 0,
+    zIndex: 1,
+  },
   progressTrack: {
     position: 'absolute',
     bottom: 0,
@@ -223,6 +383,7 @@ const styles = {
     right: 0,
     height: 3,
     background: 'rgba(255,255,255,0.08)',
+    zIndex: 5,
   },
   progressBar: {
     height: '100%',
@@ -236,6 +397,24 @@ const styles = {
     color: 'rgba(255,255,255,0.35)',
     fontSize: 12,
     fontVariantNumeric: 'tabular-nums',
+    zIndex: 5,
+  },
+  jumpBadge: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    background: 'rgba(0,0,0,0.75)',
+    backdropFilter: 'blur(8px)',
+    color: '#ffffff',
+    fontSize: 20,
+    padding: '12px 28px',
+    borderRadius: 12,
+    zIndex: 20,
+    border: '1px solid rgba(255,255,255,0.1)',
+    fontFamily: 'monospace',
+    letterSpacing: '0.05em',
+    pointerEvents: 'none',
   },
   arrow: {
     position: 'absolute',

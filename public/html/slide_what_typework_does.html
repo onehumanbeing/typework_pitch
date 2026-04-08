@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>What Typework Does</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1920px;
+    height: 1080px;
+    font-family: 'Inter', sans-serif;
+    background: #0b1120;
+    color: #ffffff;
+    overflow: hidden;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 60% 30%, rgba(0, 210, 190, 0.05) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .slide {
+    width: 100%;
+    height: 100%;
+    padding: 56px 80px 70px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* Logo */
+  .logo {
+    position: absolute;
+    top: 50px;
+    right: 80px;
+  }
+  .logo img {
+    height: 48px;
+  }
+
+  /* Header */
+  .section-label {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: #00d2be;
+    margin-bottom: 14px;
+  }
+
+  .title {
+    font-size: 60px;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+  .title .highlight { color: #00d2be; }
+
+  .subtitle {
+    font-size: 20px;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 40px;
+    font-weight: 400;
+  }
+
+  /* === TOP ROW: Systems → Typework === */
+  .top-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 36px;
+  }
+
+  /* Left: Old systems */
+  .old-systems {
+    flex: 0 0 560px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .old-label {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #ff4d6a;
+    margin-bottom: 16px;
+    opacity: 0.85;
+  }
+
+  .sys-row {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+
+  .sys-chip {
+    background: rgba(255, 77, 106, 0.07);
+    border: 1.5px solid rgba(255, 77, 106, 0.3);
+    border-radius: 10px;
+    padding: 14px 24px;
+    text-align: center;
+    position: relative;
+    min-width: 120px;
+  }
+
+  .sys-chip .name {
+    font-size: 26px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.85);
+  }
+
+  .sys-chip .x-mark {
+    position: absolute;
+    top: -9px;
+    right: -9px;
+    width: 24px;
+    height: 24px;
+    background: #ff4d6a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    color: white;
+    line-height: 1;
+  }
+
+  .old-desc {
+    font-size: 18px;
+    color: rgba(255,77,106,0.6);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+
+  /* Arrow divider */
+  .arrow-divider {
+    flex: 0 0 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .big-arrow {
+    font-size: 48px;
+    color: #00d2be;
+    opacity: 0.5;
+  }
+
+  /* Right: Typework CIO */
+  .typework-cio {
+    flex: 1;
+    background: rgba(0, 210, 190, 0.04);
+    border: 1.5px solid rgba(0, 210, 190, 0.18);
+    border-radius: 20px;
+    padding: 32px 40px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .cio-circle {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00d2be, #009e90);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 50px rgba(0, 210, 190, 0.2);
+    flex-shrink: 0;
+  }
+
+  .cio-circle .cio-sub {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(11, 17, 32, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  .cio-circle .cio-main {
+    font-size: 26px;
+    font-weight: 800;
+    color: #0b1120;
+    line-height: 1;
+  }
+
+  .cio-text {
+    flex: 1;
+  }
+
+  .cio-text h3 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #ffffff;
+  }
+
+  .cio-text p {
+    font-size: 19px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.5;
+  }
+
+  .cio-text .upload-line {
+    margin-top: 12px;
+    font-size: 19px;
+    color: #00d2be;
+    font-weight: 600;
+  }
+
+  /* === BOTTOM ROW: Before / After network === */
+  .bottom-row {
+    flex: 1;
+    display: flex;
+    gap: 40px;
+    align-items: stretch;
+  }
+
+  .panel {
+    flex: 1;
+    border-radius: 18px;
+    padding: 34px 44px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .panel-before {
+    background: rgba(255, 77, 106, 0.04);
+    border: 1.5px solid rgba(255, 77, 106, 0.15);
+  }
+
+  .panel-after {
+    background: rgba(0, 210, 190, 0.04);
+    border: 1.5px solid rgba(0, 210, 190, 0.18);
+  }
+
+  .panel-tag {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .panel-before .panel-tag { color: #ff4d6a; }
+  .panel-after .panel-tag { color: #00d2be; }
+
+  .panel-title {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+
+  .panel-before .panel-title { color: rgba(255,255,255,0.85); }
+  .panel-after .panel-title { color: #ffffff; }
+
+  .panel-visual {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Linear chain visual */
+  .linear-chain {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .chain-node {
+    background: rgba(255, 77, 106, 0.1);
+    border: 1.5px solid rgba(255, 77, 106, 0.25);
+    border-radius: 12px;
+    padding: 18px 16px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    min-width: 120px;
+    line-height: 1.3;
+  }
+
+  .chain-arrow {
+    color: rgba(255, 77, 106, 0.4);
+    font-size: 30px;
+    margin: 0 8px;
+    flex-shrink: 0;
+  }
+
+  .chain-problems {
+    display: flex;
+    gap: 32px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .problem-item {
+    font-size: 18px;
+    color: rgba(255, 77, 106, 0.6);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .problem-x {
+    color: #ff4d6a;
+    font-weight: 800;
+    font-size: 19px;
+  }
+
+  /* Network visual */
+  .network-svg-wrap {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .network-svg-wrap svg {
+    width: 500px;
+    height: 300px;
+  }
+
+  .panel-after .panel-footer {
+    font-size: 18px;
+    color: rgba(0, 210, 190, 0.6);
+    margin-top: 14px;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  /* Bottom bar */
+  .bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: rgba(0, 210, 190, 0.05);
+    border-top: 1px solid rgba(0, 210, 190, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    padding: 0 80px;
+  }
+
+  .bottom-item {
+    font-size: 22px;
+    font-weight: 700;
+    color: #00d2be;
+    letter-spacing: 0.3px;
+  }
+
+  .bottom-item.white {
+    color: #ffffff;
+  }
+
+  /* Panel middle arrow */
+  .panels-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 50px;
+  }
+
+  .panels-arrow-icon {
+    font-size: 40px;
+    color: #00d2be;
+    opacity: 0.45;
+  }
+</style>
+</head>
+<body>
+  <div class="slide">
+    <!-- Logo -->
+    <div class="logo">
+      <img src="Logo.png" alt="Typework">
+    </div>
+
+    <!-- Header -->
+    <div class="section-label">What Typework Does</div>
+    <div class="title">Your AI-powered CIO.<br><span class="highlight">No systems. No engineers. Just results.</span></div>
+
+    <!-- TOP ROW: Old systems → Typework -->
+    <div class="top-row">
+      <div class="old-systems">
+        <div class="old-label">You Don't Need</div>
+        <div class="sys-row">
+          <div class="sys-chip"><div class="x-mark">✕</div><div class="name">CRM</div></div>
+          <div class="sys-chip"><div class="x-mark">✕</div><div class="name">ERP</div></div>
+          <div class="sys-chip"><div class="x-mark">✕</div><div class="name">POS</div></div>
+          <div class="sys-chip"><div class="x-mark">✕</div><div class="name">HRM</div></div>
+        </div>
+        <div class="old-desc">Expensive, rigid, and they don't talk to each other.</div>
+      </div>
+
+      <div class="arrow-divider">
+        <div class="big-arrow">→</div>
+      </div>
+
+      <div class="typework-cio">
+        <div class="cio-circle">
+          <div class="cio-sub">Your</div>
+          <div class="cio-main">AI CIO</div>
+        </div>
+        <div class="cio-text">
+          <h3>Typework replaces them all.</h3>
+          <p>One AI agent that runs your operations — CRM, ERP, POS, HRM — unified and intelligent.</p>
+          <div class="upload-line">Just upload your documents. Everything is ready.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM ROW: Before → After network -->
+    <div class="bottom-row">
+      <!-- Before: Linear -->
+      <div class="panel panel-before">
+        <div class="panel-tag">Before — Linear Chains</div>
+        <div class="panel-title">Each link only talks to the next one.</div>
+        <div class="panel-visual">
+          <div style="display:flex;flex-direction:column;align-items:center;width:100%;">
+            <div class="linear-chain">
+              <div class="chain-node">Raw<br>Supplier</div>
+              <div class="chain-arrow">→</div>
+              <div class="chain-node">Manu-<br>facturer</div>
+              <div class="chain-arrow">→</div>
+              <div class="chain-node">Distri-<br>butor</div>
+              <div class="chain-arrow">→</div>
+              <div class="chain-node">Service<br>Provider</div>
+              <div class="chain-arrow">→</div>
+              <div class="chain-node">End<br>Customer</div>
+            </div>
+            <div class="chain-problems">
+              <div class="problem-item"><span class="problem-x">✕</span> No cross-chain visibility</div>
+              <div class="problem-item"><span class="problem-x">✕</span> Synergies invisible</div>
+              <div class="problem-item"><span class="problem-x">✕</span> Every industry, same story</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrow between panels -->
+      <div class="panels-arrow">
+        <div class="panels-arrow-icon">→</div>
+      </div>
+
+      <!-- After: Network -->
+      <div class="panel panel-after">
+        <div class="panel-tag">After — Intelligent Network</div>
+        <div class="panel-title">Every business connected. Synergies emerge.</div>
+        <div class="panel-visual">
+          <div class="network-svg-wrap">
+            <svg viewBox="0 0 280 160">
+              <!-- Connections -->
+              <line x1="140" y1="20" x2="50" y2="60" stroke="#00d2be" stroke-width="1.5" opacity="0.35"/>
+              <line x1="140" y1="20" x2="230" y2="60" stroke="#00d2be" stroke-width="1.5" opacity="0.35"/>
+              <line x1="140" y1="20" x2="140" y2="90" stroke="#00d2be" stroke-width="1.5" opacity="0.25"/>
+              <line x1="50" y1="60" x2="140" y2="90" stroke="#00d2be" stroke-width="1.5" opacity="0.35"/>
+              <line x1="230" y1="60" x2="140" y2="90" stroke="#00d2be" stroke-width="1.5" opacity="0.35"/>
+              <line x1="50" y1="60" x2="230" y2="60" stroke="#00d2be" stroke-width="1" opacity="0.2"/>
+              <line x1="50" y1="60" x2="30" y2="120" stroke="#00d2be" stroke-width="1.5" opacity="0.3"/>
+              <line x1="50" y1="60" x2="100" y2="130" stroke="#00d2be" stroke-width="1.5" opacity="0.3"/>
+              <line x1="230" y1="60" x2="250" y2="120" stroke="#00d2be" stroke-width="1.5" opacity="0.3"/>
+              <line x1="230" y1="60" x2="180" y2="130" stroke="#00d2be" stroke-width="1.5" opacity="0.3"/>
+              <line x1="140" y1="90" x2="100" y2="130" stroke="#00d2be" stroke-width="1.5" opacity="0.3"/>
+              <line x1="140" y1="90" x2="180" y2="130" stroke="#00d2be" stroke-width="1.5" opacity="0.3"/>
+              <line x1="30" y1="120" x2="100" y2="130" stroke="#00d2be" stroke-width="1" opacity="0.2"/>
+              <line x1="180" y1="130" x2="250" y2="120" stroke="#00d2be" stroke-width="1" opacity="0.2"/>
+              <line x1="100" y1="130" x2="180" y2="130" stroke="#00d2be" stroke-width="1" opacity="0.15"/>
+
+              <!-- Nodes -->
+              <circle cx="140" cy="20" r="13" fill="#00d2be"/>
+              <circle cx="50" cy="60" r="11" fill="#00d2be" opacity="0.8"/>
+              <circle cx="230" cy="60" r="11" fill="#00d2be" opacity="0.8"/>
+              <circle cx="140" cy="90" r="12" fill="#00d2be" opacity="0.9"/>
+              <circle cx="30" cy="120" r="9" fill="#00d2be" opacity="0.6"/>
+              <circle cx="100" cy="130" r="10" fill="#00d2be" opacity="0.65"/>
+              <circle cx="180" cy="130" r="10" fill="#00d2be" opacity="0.65"/>
+              <circle cx="250" cy="120" r="9" fill="#00d2be" opacity="0.6"/>
+
+              <!-- Labels -->
+              <text x="140" y="12" text-anchor="middle" fill="white" font-size="13" font-weight="600" opacity="0.85">Caterer</text>
+              <text x="50" y="52" text-anchor="middle" fill="white" font-size="13" font-weight="600" opacity="0.85">Venue</text>
+              <text x="230" y="52" text-anchor="middle" fill="white" font-size="13" font-weight="600" opacity="0.85">Florist</text>
+              <text x="140" y="82" text-anchor="middle" fill="white" font-size="13" font-weight="600" opacity="0.85">Cleaner</text>
+              <text x="30" y="139" text-anchor="middle" fill="white" font-size="12" font-weight="600" opacity="0.7">Locksmith</text>
+              <text x="100" y="149" text-anchor="middle" fill="white" font-size="12" font-weight="600" opacity="0.7">Clinic</text>
+              <text x="180" y="149" text-anchor="middle" fill="white" font-size="12" font-weight="600" opacity="0.7">Supplier</text>
+              <text x="250" y="139" text-anchor="middle" fill="white" font-size="12" font-weight="600" opacity="0.7">Transport</text>
+            </svg>
+          </div>
+        </div>
+        <div class="panel-footer">Powered by Typework</div>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="bottom-bar">
+      <div class="bottom-item">No code.</div>
+      <div class="bottom-item">No API.</div>
+      <div class="bottom-item">No engineering team.</div>
+      <div class="bottom-item white">We help every business gain the distribution & deployment power.</div>
+    </div>
+  </div>
+</body>
+</html>

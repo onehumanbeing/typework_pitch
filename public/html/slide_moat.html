@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>The Moat</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1920px; height: 1080px;
+    font-family: 'Inter', sans-serif;
+    background: #0b1120; color: #fff; overflow: hidden;
+  }
+  .slide {
+    width: 100%; height: 100%;
+    padding: 48px 72px 64px;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .logo { position: absolute; top: 44px; right: 72px; }
+  .logo img { height: 48px; }
+  .section-label {
+    font-size: 15px; font-weight: 600; letter-spacing: 5px;
+    text-transform: uppercase; color: #00d2be; margin-bottom: 10px;
+  }
+  .title {
+    font-size: 48px; font-weight: 700; line-height: 1.15; margin-bottom: 32px;
+  }
+  .title .highlight { color: #00d2be; }
+  .content {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    gap: 80px;
+  }
+
+  /* Flywheel */
+  .flywheel-wrap {
+    position: relative; width: 560px; height: 560px; flex-shrink: 0;
+  }
+  .flywheel-ring {
+    position: absolute; inset: 0;
+  }
+  .node {
+    position: absolute;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 20px;
+    font-weight: 700; line-height: 1.25;
+  }
+  .node-1 {
+    top: 0; left: 50%; transform: translateX(-50%);
+    background: rgba(0,210,190,0.15); border: 2.5px solid #00d2be;
+    font-size: 22px; color: #00d2be;
+  }
+  .node-2 {
+    top: 50%; right: 0; transform: translateY(-50%);
+    background: rgba(0,210,190,0.08); border: 2px solid rgba(0,210,190,0.5);
+    font-size: 20px; color: rgba(255,255,255,0.85);
+  }
+  .node-3 {
+    bottom: 0; left: 50%; transform: translateX(-50%);
+    background: rgba(0,210,190,0.08); border: 2px solid rgba(0,210,190,0.5);
+    font-size: 20px; color: rgba(255,255,255,0.85);
+  }
+  .node-4 {
+    top: 50%; left: 0; transform: translateY(-50%);
+    background: rgba(0,210,190,0.08); border: 2px solid rgba(0,210,190,0.5);
+    font-size: 20px; color: rgba(255,255,255,0.85);
+  }
+
+  /* Arrows between nodes */
+  .arrow {
+    position: absolute;
+    color: #00d2be;
+    font-size: 36px;
+    font-weight: 300;
+    opacity: 0.6;
+  }
+  .arrow-1 { top: 80px; right: 50px; transform: rotate(45deg); }
+  .arrow-2 { bottom: 80px; right: 50px; transform: rotate(135deg); }
+  .arrow-3 { bottom: 80px; left: 50px; transform: rotate(225deg); }
+  .arrow-4 { top: 80px; left: 50px; transform: rotate(315deg); }
+
+  /* Center label */
+  .center-label {
+    position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  .center-icon {
+    font-size: 44px; color: #00d2be; margin-bottom: 6px;
+  }
+  .center-text {
+    font-size: 18px; font-weight: 700; color: rgba(255,255,255,0.5);
+    letter-spacing: 3px; text-transform: uppercase;
+  }
+
+  /* Right side - explanation */
+  .moat-explain {
+    max-width: 560px;
+  }
+  .moat-point {
+    margin-bottom: 36px;
+  }
+  .moat-point-num {
+    display: inline-block;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: rgba(0,210,190,0.12);
+    border: 2px solid rgba(0,210,190,0.3);
+    text-align: center; line-height: 44px;
+    font-size: 24px; font-weight: 800; color: #00d2be;
+    margin-right: 16px;
+    vertical-align: top;
+  }
+  .moat-point-content {
+    display: inline-block;
+    vertical-align: top;
+    width: calc(100% - 72px);
+  }
+  .moat-point-title {
+    font-size: 28px; font-weight: 700; color: #fff;
+    margin-bottom: 6px; line-height: 1.3;
+  }
+  .moat-point-desc {
+    font-size: 21px; font-weight: 500; color: rgba(255,255,255,0.45);
+    line-height: 1.5;
+  }
+  .moat-point-desc strong { color: #00d2be; font-weight: 700; }
+
+  /* Bottom bar */
+  .bottom-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 56px;
+    background: rgba(0,210,190,0.04);
+    border-top: 1px solid rgba(0,210,190,0.08);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .bottom-text {
+    font-size: 19px; font-weight: 600; color: #00d2be; opacity: 0.7;
+  }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="logo"><img src="Logo.png" alt="Typework"></div>
+  <div class="section-label">The Moat</div>
+  <div class="title">A <span class="highlight">network flywheel</span> that compounds.</div>
+
+  <div class="content">
+    <!-- LEFT: Flywheel -->
+    <div class="flywheel-wrap">
+      <div class="node node-1">More<br>Businesses<br>Join</div>
+      <div class="node node-2">More<br>Synergies<br>Created</div>
+      <div class="node node-3">More<br>Value<br>Delivered</div>
+      <div class="node node-4">Stronger<br>Network<br>Effect</div>
+
+      <div class="arrow arrow-1">➜</div>
+      <div class="arrow arrow-2">➜</div>
+      <div class="arrow arrow-3">➜</div>
+      <div class="arrow arrow-4">➜</div>
+
+      <div class="center-label">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00d2be" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+        <div class="center-text">Flywheel</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Explanation -->
+    <div class="moat-explain">
+      <div class="moat-point">
+        <span class="moat-point-num">1</span>
+        <div class="moat-point-content">
+          <div class="moat-point-title">Network effects compound</div>
+          <div class="moat-point-desc">Every new business makes the network <strong>exponentially more valuable</strong> for everyone already on it.</div>
+        </div>
+      </div>
+      <div class="moat-point">
+        <span class="moat-point-num">2</span>
+        <div class="moat-point-content">
+          <div class="moat-point-title">Data moat deepens over time</div>
+          <div class="moat-point-desc">More transactions = smarter AI agents = <strong>better matches, better automation</strong>.</div>
+        </div>
+      </div>
+      <div class="moat-point">
+        <span class="moat-point-num">3</span>
+        <div class="moat-point-content">
+          <div class="moat-point-title">Switching cost is the network</div>
+          <div class="moat-point-desc">Leaving Typework means losing access to <strong>all your business connections</strong> and automations.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <div class="bottom-text">The more who join, the harder it is to leave. The harder it is to replicate.</div>
+  </div>
+</div>
+</body>
+</html>
