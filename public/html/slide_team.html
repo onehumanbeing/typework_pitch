@@ -35,6 +35,9 @@
     height: 32px; opacity: 0.55;
     filter: grayscale(30%);
   }
+  .logos img.logo-dark {
+    filter: grayscale(30%) invert(1) brightness(1.8);
+  }
 
   /* ── Team grid: 2 rows ── */
   .team {
@@ -94,8 +97,9 @@
       <img src="team/logo-epam.png" alt="EPAM">
       <img src="team/logo-hulu.png" alt="Hulu">
       <img src="team/logo-bytedance.png" alt="ByteDance">
-      <img src="team/logo-cambridge.png" alt="Cambridge">
+      <img src="team/logo-cambridge.png" alt="Cambridge" class="logo-dark">
       <img src="team/logo-mihoyo.png" alt="miHoYo">
+      <img src="team/logo-tsinghua.png" alt="Tsinghua">
     </div>
   </div>
 
@@ -103,7 +107,7 @@
     <!-- Row 1: Founders -->
     <div class="row row-founders">
       <div class="person">
-        <img class="avatar" src="team/henry.jpg" alt="Henry">
+        <img class="avatar" src="team/henry.png" alt="Henry">
         <div class="name">Henry</div>
         <div class="role">Founder, CEO</div>
         <div class="bio">
@@ -114,7 +118,7 @@
         </div>
       </div>
       <div class="person">
-        <img class="avatar" src="team/james.png" alt="James">
+        <img class="avatar" src="team/james.jpg" alt="James">
         <div class="name">James</div>
         <div class="role">Cofounder, CPO</div>
         <div class="bio">
@@ -129,7 +133,7 @@
     <!-- Row 2: Core team -->
     <div class="row">
       <div class="person">
-        <img class="avatar" src="team/feilong.jpg" alt="Fei Long">
+        <img class="avatar" src="team/feilong.png" alt="Fei Long">
         <div class="name">Fei Long</div>
         <div class="role">CTO</div>
         <div class="bio">

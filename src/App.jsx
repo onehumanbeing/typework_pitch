@@ -113,6 +113,16 @@ function PitchDeck() {
   const slide = SLIDES[current]
   const isVideo = slide.type === 'video'
 
+  /* ── preload all images on mount ────────────────────── */
+  useEffect(() => {
+    SLIDES.forEach(s => {
+      if (s.type === 'image') {
+        const img = new Image()
+        img.src = s.src
+      }
+    })
+  }, [])
+
   /* ── iframe scaling to fit viewport ─────────────────── */
   const [iframeScale, setIframeScale] = useState(1)
   useEffect(() => {
