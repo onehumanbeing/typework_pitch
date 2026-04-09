@@ -113,12 +113,27 @@ function PitchDeck() {
   const slide = SLIDES[current]
   const isVideo = slide.type === 'video'
 
-  /* ── preload all images on mount ────────────────────── */
+  /* ── preload all media on mount ──────────────────────── */
+  const [loadProgress, setLoadProgress] = useState(0)
+  const [loadDone, setLoadDone] = useState(false)
+
   useEffect(() => {
-    SLIDES.forEach(s => {
+    const mediaSlides = SLIDES.filter(s => s.type === 'image' || s.type === 'video')
+    const total = mediaSlides.length
+    if (total === 0) { setLoadDone(true); return }
+    let loaded = 0
+    const tick = () => {
+      loaded++
+      setLoadProgress(loaded / total)
+      if (loaded >= total) setTimeout(() => setLoadDone(true), 400)
+    }
+    mediaSlides.forEach(s => {
       if (s.type === 'image') {
         const img = new Image()
+        img.onload = img.onerror = tick
         img.src = s.src
+      } else {
+        fetch(s.src).then(tick).catch(tick)
       }
     })
   }, [])
@@ -291,6 +306,16 @@ function PitchDeck() {
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
+      {/* Media loading bar */}
+      {!loadDone && (
+        <div style={styles.loadTrack}>
+          <div style={{
+            ...styles.loadBar,
+            width: `${loadProgress * 100}%`,
+          }} />
+        </div>
+      )}
+
       <div style={styles.slideWrapper}>
         {renderSlide()}
       </div>
@@ -425,6 +450,20 @@ const styles = {
     fontFamily: 'monospace',
     letterSpacing: '0.05em',
     pointerEvents: 'none',
+  },
+  loadTrack: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 2,
+    background: 'transparent',
+    zIndex: 20,
+  },
+  loadBar: {
+    height: '100%',
+    background: 'rgba(255,255,255,0.25)',
+    transition: 'width 0.3s ease',
   },
   arrow: {
     position: 'absolute',
