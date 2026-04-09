@@ -43,9 +43,107 @@
     font-size: 46px;
     font-weight: 700;
     line-height: 1.15;
-    margin-bottom: 24px;
+    margin-bottom: 14px;
   }
   .title .highlight { color: #00d2be; }
+
+  /* ====== HANDSHAKE EQUATION STRIP ====== */
+  .handshake-strip {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 14px;
+    margin-top: -4px;
+  }
+
+  .hs-equation {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: rgba(0, 210, 190, 0.06);
+    border: 1.5px solid rgba(0, 210, 190, 0.18);
+    border-radius: 18px;
+    padding: 12px 32px;
+  }
+
+  .hs-agent {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hs-agent-dot {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #00d2be;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .hs-agent-dot svg { width: 20px; height: 20px; }
+
+  .hs-agent-label {
+    font-size: 17px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .hs-handshake-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: rgba(0, 210, 190, 0.14);
+    border: 2px solid rgba(0, 210, 190, 0.35);
+    position: relative;
+    flex-shrink: 0;
+    box-shadow: 0 0 20px rgba(0, 210, 190, 0.2);
+  }
+
+
+  .hs-line {
+    width: 36px;
+    height: 2.5px;
+    background: linear-gradient(90deg, transparent, #00d2be 30%, #00d2be 70%, transparent);
+    flex-shrink: 0;
+  }
+
+  .hs-equals {
+    font-size: 28px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.3);
+    margin: 0 4px;
+  }
+
+  .hs-result {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hs-result-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(0, 210, 190, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hs-result-icon svg { width: 20px; height: 20px; }
+
+  .hs-result-text {
+    font-size: 19px;
+    font-weight: 700;
+    color: #00d2be;
+  }
+
 
   .content {
     display: flex;
@@ -89,7 +187,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 6px;
   }
 
   .shift-half-title {
@@ -106,7 +204,7 @@
   }
 
   .shift-half .stat-num {
-    font-size: 80px;
+    font-size: 64px;
     font-weight: 800;
     line-height: 1;
   }
@@ -114,16 +212,16 @@
   .shift-half.networked .stat-num { color: #00d2be; }
 
   .shift-half .stat-label {
-    font-size: 24px;
+    font-size: 20px;
     color: rgba(255,255,255,0.4);
     font-weight: 500;
     margin-top: -4px;
   }
 
   .shift-badge {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 700;
-    padding: 10px 30px;
+    padding: 8px 24px;
     border-radius: 28px;
     background: rgba(0, 210, 190, 0.14);
     color: #00d2be;
@@ -262,6 +360,50 @@
 
     <div class="section-label">The Shift + The Opportunity</div>
     <div class="title">From chains to networks. <span class="highlight">New economics, unlocked by AI.</span></div>
+    <!-- Handshake Equation Visual -->
+    <div class="handshake-strip">
+      <div class="hs-equation">
+        <!-- Agent A -->
+        <div class="hs-agent">
+          <div class="hs-agent-dot">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0b1120" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/>
+            </svg>
+          </div>
+          <span class="hs-agent-label">Agent A</span>
+        </div>
+
+        <!-- Handshake connector -->
+        <div class="hs-line"></div>
+        <div class="hs-handshake-icon">
+          <span style="font-size: 28px; line-height: 1;">🤝</span>
+        </div>
+        <div class="hs-line"></div>
+
+        <!-- Agent B -->
+        <div class="hs-agent">
+          <div class="hs-agent-dot">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0b1120" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/>
+            </svg>
+          </div>
+          <span class="hs-agent-label">Agent B</span>
+        </div>
+
+        <!-- Equals -->
+        <div class="hs-equals">=</div>
+
+        <!-- Result -->
+        <div class="hs-result">
+          <div class="hs-result-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#00d2be" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+          </div>
+          <span class="hs-result-text">New Business Opportunity</span>
+        </div>
+      </div>
+    </div>
 
     <div class="content">
       <!-- LEFT: The Shift -->
@@ -273,7 +415,7 @@
           <div class="shift-half linear">
             <div class="shift-half-title">Linear</div>
             <div class="diagram">
-              <svg width="320" height="320" viewBox="0 0 320 320">
+              <svg width="280" height="280" viewBox="0 0 320 320">
                 <!-- Row 1: 3 chained -->
                 <circle cx="60" cy="100" r="36" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="3"/>
                 <circle cx="160" cy="100" r="36" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="3"/>
@@ -299,7 +441,10 @@
           <div class="shift-half networked">
             <div class="shift-half-title">Networked</div>
             <div class="diagram">
-              <svg width="320" height="320" viewBox="0 0 320 320">
+              <svg width="280" height="280" viewBox="0 0 320 320">
+                <defs>
+                  <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                </defs>
                 <!-- 15 connections -->
                 <line x1="160" y1="35" x2="50" y2="120" stroke="#00d2be" stroke-width="2.5" opacity="0.3"/>
                 <line x1="160" y1="35" x2="270" y2="120" stroke="#00d2be" stroke-width="2.5" opacity="0.3"/>
@@ -316,6 +461,17 @@
                 <line x1="160" y1="170" x2="80" y2="250" stroke="#00d2be" stroke-width="2.5" opacity="0.25"/>
                 <line x1="160" y1="170" x2="240" y2="250" stroke="#00d2be" stroke-width="2.5" opacity="0.25"/>
                 <line x1="80" y1="250" x2="240" y2="250" stroke="#00d2be" stroke-width="2.5" opacity="0.2"/>
+
+                <!-- Highlighted handshake: one connection glowing -->
+                <line x1="50" y1="120" x2="270" y2="120" stroke="#00ffeb" stroke-width="3.5" filter="url(#glow)">
+                  <animate attributeName="opacity" values="0.9;0.4;0.9" dur="2.5s" repeatCount="indefinite"/>
+                </line>
+                <!-- 🤝 emoji at midpoint -->
+                <text x="160" y="112" text-anchor="middle" font-size="22" dominant-baseline="central">🤝</text>
+                <!-- Callout label inside SVG -->
+                <rect x="108" y="82" width="104" height="22" rx="6" fill="rgba(0,210,190,0.12)" stroke="rgba(0,255,235,0.3)" stroke-width="1"/>
+                <text x="160" y="96" text-anchor="middle" font-size="11" font-weight="600" fill="#00ffeb" font-family="Inter, sans-serif">= 1 opportunity</text>
+
                 <!-- Nodes -->
                 <circle cx="160" cy="35" r="36" fill="#00d2be" opacity="0.85"/>
                 <circle cx="50" cy="120" r="36" fill="#00d2be" opacity="0.75"/>
@@ -326,8 +482,8 @@
               </svg>
             </div>
             <div class="stat-num">15</div>
-            <div class="stat-label">connections</div>
-            <div class="shift-badge">4.6x more opportunity</div>
+            <div class="stat-label">handshakes</div>
+            <div class="shift-badge">15 new opportunities</div>
           </div>
         </div>
       </div>
@@ -335,46 +491,46 @@
       <!-- RIGHT: The Opportunity -->
       <div class="panel-opp">
         <div class="panel-label">The Opportunity</div>
-        <div class="opp-title">Connections scale exponentially.</div>
-        <div class="opp-subtitle">New economics multipliers unlocked by AI agents</div>
+        <div class="opp-title">Handshakes scale exponentially.</div>
+        <div class="opp-subtitle">Every agent connection is a revenue opportunity — and they multiply fast</div>
 
         <div class="bar-chart">
           <div class="bar-item">
             <div class="bar-value">10</div>
             <div class="bar-rect" style="height: 20px;"></div>
-            <div class="bar-label"><strong>5</strong><br>businesses</div>
+            <div class="bar-label"><strong>5</strong> businesses</div>
           </div>
           <div class="bar-item">
             <div class="bar-value">45</div>
             <div class="bar-rect" style="height: 42px;"></div>
-            <div class="bar-label"><strong>10</strong><br>businesses</div>
+            <div class="bar-label"><strong>10</strong> businesses</div>
           </div>
           <div class="bar-item">
             <div class="bar-value">300</div>
             <div class="bar-rect" style="height: 90px;"></div>
-            <div class="bar-label"><strong>25</strong><br>businesses</div>
+            <div class="bar-label"><strong>25</strong> businesses</div>
           </div>
           <div class="bar-item">
             <div class="bar-value">1,225</div>
             <div class="bar-rect" style="height: 165px;"></div>
-            <div class="bar-label"><strong>50</strong><br>businesses</div>
+            <div class="bar-label"><strong>50</strong> businesses</div>
           </div>
           <div class="bar-item">
             <div class="bar-value big">4,950</div>
             <div class="bar-rect" style="height: 300px;"></div>
-            <div class="bar-label"><strong>100</strong><br>businesses</div>
+            <div class="bar-label"><strong>100</strong> businesses</div>
           </div>
         </div>
 
         <div class="opp-footer">
-          A local network of just <strong>100 businesses</strong> creates <strong>4,950 potential synergies</strong>.<br>
-          That's 4,950 revenue opportunities that <strong>don't exist today</strong>.
+          A local network of just <strong>100 businesses</strong> creates <strong>4,950 agent handshakes</strong> —<br>
+          each one a revenue opportunity that <strong>doesn't exist today</strong>.
         </div>
       </div>
     </div>
 
     <div class="bottom-bar">
-      <div class="bottom-text">Typework transforms every industry from chains into networks.</div>
+      <div class="bottom-text">Typework turns every industry into a network — every agent handshake unlocks new revenue.</div>
     </div>
   </div>
 </body>

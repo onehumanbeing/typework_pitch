@@ -13,138 +13,218 @@
     font-family: 'Inter', sans-serif;
     background: #0b1120; color: #fff; overflow: hidden;
   }
-  body::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 35% 55%, rgba(0,210,190,0.04) 0%, transparent 55%);
-    pointer-events: none;
-  }
 
   .slide {
     width: 100%; height: 100%;
-    padding: 56px 80px 50px;
+    padding: 44px 80px 36px;
     display: flex; flex-direction: column; position: relative;
   }
-  .logo { position: absolute; top: 50px; right: 80px; }
+  .logo { position: absolute; top: 44px; right: 80px; }
   .logo img { height: 48px; }
 
   .section-label {
-    font-size: 18px; font-weight: 600; letter-spacing: 5px;
-    text-transform: uppercase; color: #00d2be; margin-bottom: 14px;
+    font-size: 16px; font-weight: 600; letter-spacing: 5px;
+    text-transform: uppercase; color: #00d2be; margin-bottom: 8px;
   }
   .title {
-    font-size: 56px; font-weight: 700; line-height: 1.15; margin-bottom: 36px;
+    font-size: 52px; font-weight: 700; line-height: 1.15; margin-bottom: 20px;
   }
 
-  /* ── Two-column: grid left, cards right ── */
-  .content { display: flex; gap: 50px; flex: 1; }
+  /* ══════ LAYOUT ══════ */
+  .main {
+    flex: 1; display: flex; flex-direction: column; min-height: 0;
+  }
 
-  /* ── Left: 2×2 quadrant ── */
-  .quadrant {
-    flex: 0 0 680px;
+  /* ── Matrix wrapper with cross axes ── */
+  .matrix-wrap {
+    flex: 1; position: relative; min-height: 0;
+  }
+
+  /* Cross lines through center */
+  .cross-h, .cross-v {
+    position: absolute; z-index: 2; pointer-events: none;
+  }
+  .cross-h {
+    left: 0; right: 0; top: 50%;
+    height: 7px; transform: translateY(-50%);
+    background: linear-gradient(90deg, rgba(255,255,255,0.08), rgba(0,210,190,0.45) 40%, rgba(0,210,190,0.6));
+    border-radius: 4px;
+    box-shadow: 0 0 12px rgba(0,210,190,0.15);
+  }
+  .cross-v {
+    top: 0; bottom: 0; left: 50%;
+    width: 7px; transform: translateX(-50%);
+    background: linear-gradient(180deg, rgba(0,210,190,0.6), rgba(0,210,190,0.45) 60%, rgba(255,255,255,0.08));
+    border-radius: 4px;
+    box-shadow: 0 0 12px rgba(0,210,190,0.15);
+  }
+
+  /* Axis endpoint labels — sit on the cross lines with bg pill */
+  .ax-label {
+    position: absolute; z-index: 4;
+    font-size: 14px; font-weight: 800; letter-spacing: 3px;
+    text-transform: uppercase;
+    background: #0b1120; padding: 4px 12px;
+    white-space: nowrap;
+  }
+  .ax-top {
+    top: 4px; left: 50%; transform: translateX(-50%);
+    color: #00d2be;
+  }
+  .ax-bottom {
+    bottom: 4px; left: 50%; transform: translateX(-50%);
+    color: rgba(255,255,255,0.25);
+  }
+  .ax-left {
+    left: 4px; top: 50%; transform: translateY(-50%);
+    color: rgba(255,255,255,0.25);
+  }
+  .ax-right {
+    right: 4px; top: 50%; transform: translateY(-50%);
+    color: #00d2be;
+  }
+
+  /* Arrow tips on cross */
+  .arrow-top, .arrow-right {
+    position: absolute; z-index: 3; pointer-events: none;
+  }
+  .arrow-top {
+    left: 50%; top: 0; transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 12px solid transparent; border-right: 12px solid transparent;
+    border-bottom: 18px solid rgba(0,210,190,0.6);
+    filter: drop-shadow(0 0 6px rgba(0,210,190,0.25));
+  }
+  .arrow-right {
+    right: 0; top: 50%; transform: translateY(-50%);
+    width: 0; height: 0;
+    border-top: 12px solid transparent; border-bottom: 12px solid transparent;
+    border-left: 18px solid rgba(0,210,190,0.6);
+    filter: drop-shadow(0 0 6px rgba(0,210,190,0.25));
+  }
+
+  /* ── 2×2 Grid ── */
+  .matrix {
+    width: 100%; height: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
-    gap: 14px;
+    gap: 40px;
+    padding: 24px 0;
   }
 
-  .zone {
-    border-radius: 16px;
-    padding: 24px 28px;
+  /* ── Quadrant base ── */
+  .quad {
+    border-radius: 16px; padding: 22px 28px;
     display: flex; flex-direction: column;
   }
-  .zone-dim {
+  .quad-dim {
     background: rgba(255,255,255,0.02);
     border: 1px solid rgba(255,255,255,0.06);
   }
 
-  .zone-label {
-    font-size: 12px; font-weight: 700; letter-spacing: 2.5px;
-    text-transform: uppercase; color: rgba(255,255,255,0.25);
-    margin-bottom: 16px;
+  .quad-top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px; gap: 12px;
   }
 
-  .zone-name {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 18px; font-weight: 500; color: rgba(255,255,255,0.45);
-    margin-bottom: 10px;
-  }
-  .zone-name .dot {
-    width: 10px; height: 10px; border-radius: 50%;
-    background: rgba(255,255,255,0.12);
-    border: 1.5px solid rgba(255,255,255,0.2);
-    flex-shrink: 0;
+  .quad-title {
+    font-size: 30px; font-weight: 700; color: rgba(255,255,255,0.85);
   }
 
-  /* Top-right: Typework zone */
-  .zone-tw {
+  /* Weakness badge */
+  .weakness {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 17px; font-weight: 700; color: #ff4d6a;
+    background: rgba(255,77,106,0.08);
+    border: 1.5px solid rgba(255,77,106,0.2);
+    border-radius: 24px; padding: 7px 20px;
+    flex-shrink: 0; white-space: nowrap;
+  }
+
+  /* Company chips */
+  .quad-names {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;
+  }
+  .chip {
+    font-size: 19px; font-weight: 600; color: rgba(255,255,255,0.55);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 7px 18px;
+  }
+
+  /* Description */
+  .quad-desc {
+    font-size: 19px; color: rgba(255,255,255,0.5); line-height: 1.5;
+  }
+
+  /* Missing capabilities — visual ✕ list */
+  .missing {
+    display: flex; flex-wrap: wrap; gap: 14px; margin-top: auto; padding-top: 10px;
+  }
+  .missing-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 20px; font-weight: 700;
+    color: rgba(255,255,255,0.35);
+    text-decoration: line-through;
+    text-decoration-color: rgba(255,77,106,0.6);
+    text-decoration-thickness: 2.5px;
+  }
+  .missing-x {
+    font-size: 20px; color: rgba(255,77,106,0.8); font-weight: 800;
+    text-decoration: none; display: inline-block;
+  }
+
+  /* ══════ TYPEWORK QUADRANT ══════ */
+  .quad-tw {
     background: rgba(0,210,190,0.06);
-    border: 1.5px solid rgba(0,210,190,0.2);
+    border: 2.5px solid rgba(0,210,190,0.3);
+    box-shadow: 0 0 80px rgba(0,210,190,0.08), inset 0 0 60px rgba(0,210,190,0.03);
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    gap: 14px;
-  }
-  .zone-tw .zone-label {
-    color: rgba(0,210,190,0.5);
-    text-align: center;
+    text-align: center; gap: 12px;
   }
 
-  .tw-circle {
-    width: 90px; height: 90px; border-radius: 50%;
-    background: linear-gradient(135deg, #00d2be, #009e90);
+  .tw-badge {
+    font-size: 13px; font-weight: 700; letter-spacing: 4px;
+    text-transform: uppercase; color: rgba(0,210,190,0.5);
+  }
+
+  .tw-logo {
+    width: 110px; height: 110px; border-radius: 50%;
+    background: linear-gradient(135deg, #00d2be, #00a89a);
     display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 800; color: #0b1120; letter-spacing: 1px;
-    box-shadow: 0 0 50px rgba(0,210,190,0.25);
+    font-size: 14px; font-weight: 800; color: #0b1120;
+    letter-spacing: 1.5px;
+    box-shadow: 0 0 50px rgba(0,210,190,0.3);
     position: relative;
   }
-  .tw-circle::before {
-    content: '';
-    position: absolute;
-    width: 116px; height: 116px; border-radius: 50%;
-    border: 1.5px solid rgba(0,210,190,0.15);
+  .tw-logo::before {
+    content: ''; position: absolute;
+    width: 136px; height: 136px; border-radius: 50%;
+    border: 2px solid rgba(0,210,190,0.15);
   }
 
-  .tw-tags {
-    display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
-  }
-  .tw-tag {
-    font-size: 12px; font-weight: 600; color: rgba(0,210,190,0.6);
-    background: rgba(0,210,190,0.08);
-    border: 1px solid rgba(0,210,190,0.15);
-    border-radius: 20px; padding: 4px 14px;
-    letter-spacing: 0.5px;
+  .tw-tagline {
+    font-size: 21px; font-weight: 600; color: #00d2be;
+    max-width: 400px; line-height: 1.4;
   }
 
-  /* ── Right: cards ── */
-  .cards {
-    flex: 1; display: flex; flex-direction: column;
-    justify-content: center; gap: 22px;
+  .tw-has {
+    display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
   }
-  .comp-card {
-    background: rgba(255,255,255,0.025);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 16px; padding: 26px 32px;
+  .tw-has-item {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 17px; font-weight: 700; color: rgba(0,210,190,0.85);
+    background: rgba(0,210,190,0.1);
+    border: 1.5px solid rgba(0,210,190,0.25);
+    border-radius: 24px; padding: 7px 18px;
   }
-  .comp-card h3 {
-    font-size: 24px; font-weight: 700; margin-bottom: 3px;
-  }
-  .comp-names {
-    font-size: 15px; color: rgba(255,255,255,0.3);
-    margin-bottom: 10px; font-style: italic;
-  }
-  .comp-desc {
-    font-size: 17px; color: rgba(255,255,255,0.5);
-    line-height: 1.5; margin-bottom: 8px;
-  }
-  .comp-verdict {
-    font-size: 16px; font-weight: 600; color: rgba(255,77,106,0.7);
-  }
-  .comp-verdict::before { content: '→ '; }
 
-  /* ── Bottom ── */
+  /* ══════ BOTTOM ══════ */
   .bottom-bar {
-    margin-top: 24px; display: flex; flex-direction: column;
-    align-items: center; gap: 10px;
+    margin-top: 14px; display: flex; flex-direction: column;
+    align-items: center; gap: 6px;
   }
   .formula {
     font-size: 26px; font-weight: 700;
@@ -152,10 +232,9 @@
   }
   .formula .brand { color: #00d2be; font-weight: 800; }
   .formula .eq { color: rgba(255,255,255,0.5); }
-  .formula .plus { color: rgba(255,255,255,0.25); font-weight: 400; }
+  .formula .plus { color: rgba(255,255,255,0.2); font-weight: 400; }
   .bottom-sub {
-    font-size: 17px; color: rgba(255,255,255,0.35);
-    text-align: center;
+    font-size: 18px; color: rgba(255,255,255,0.35); text-align: center;
   }
 </style>
 </head>
@@ -165,59 +244,90 @@
   <div class="section-label">Competitive Landscape</div>
   <div class="title">Where Others Stop, We Start.</div>
 
-  <div class="content">
-    <div class="quadrant">
-      <!-- Top-left: AI Agents -->
-      <div class="zone zone-dim">
-        <div class="zone-label">AI Agents</div>
-        <div class="zone-name"><span class="dot"></span> Lindy AI</div>
-        <div class="zone-name"><span class="dot"></span> Relevance AI</div>
-        <div class="zone-name"><span class="dot"></span> Zapier AI</div>
-      </div>
-      <!-- Top-right: Typework -->
-      <div class="zone zone-tw">
-        <div class="zone-label">AI + Network</div>
-        <div class="tw-circle">TYPEWORK</div>
-        <div class="tw-tags">
-          <span class="tw-tag">AI Agents</span>
-          <span class="tw-tag">Network</span>
-          <span class="tw-tag">Zero Code</span>
-        </div>
-      </div>
-      <!-- Bottom-left: Legacy SaaS -->
-      <div class="zone zone-dim">
-        <div class="zone-label">Legacy SaaS</div>
-        <div class="zone-name"><span class="dot"></span> Odoo</div>
-        <div class="zone-name"><span class="dot"></span> ServiceTitan</div>
-        <div class="zone-name"><span class="dot"></span> SAP</div>
-      </div>
-      <!-- Bottom-right: Marketplaces -->
-      <div class="zone zone-dim">
-        <div class="zone-label">Marketplaces</div>
-        <div class="zone-name"><span class="dot"></span> Thumbtack</div>
-        <div class="zone-name"><span class="dot"></span> Angi</div>
-        <div class="zone-name"><span class="dot"></span> Upwork</div>
-      </div>
-    </div>
+  <div class="main">
+    <div class="matrix-wrap">
+      <!-- Cross axes through center -->
+      <div class="cross-h"></div>
+      <div class="cross-v"></div>
+      <div class="arrow-top"></div>
+      <div class="arrow-right"></div>
 
-    <div class="cards">
-      <div class="comp-card">
-        <h3>AI Agent Platforms</h3>
-        <div class="comp-names">Lindy, Zapier AI, Relevance AI</div>
-        <div class="comp-desc">Automate tasks for one business. No cross-business network or intelligence.</div>
-        <div class="comp-verdict">Single-player tools</div>
-      </div>
-      <div class="comp-card">
-        <h3>B2B Marketplaces</h3>
-        <div class="comp-names">Thumbtack, Angi, Upwork</div>
-        <div class="comp-desc">Match buyers to sellers. No AI agent layer, no workflow automation.</div>
-        <div class="comp-verdict">Static matchmaking</div>
-      </div>
-      <div class="comp-card">
-        <h3>Legacy SaaS / ERP</h3>
-        <div class="comp-names">Odoo, ServiceTitan, SAP</div>
-        <div class="comp-desc">Digitize operations inside one company. Rigid config, no network effects.</div>
-        <div class="comp-verdict">Inward-facing silos</div>
+      <!-- Axis labels at ends -->
+      <div class="ax-label ax-top">↑ AI-Native</div>
+      <div class="ax-label ax-bottom">Manual ↓</div>
+      <div class="ax-label ax-left">← Single Business</div>
+      <div class="ax-label ax-right">Business Network →</div>
+
+      <!-- 2×2 Matrix -->
+      <div class="matrix">
+
+        <!-- Top-Left: AI Agent Platforms -->
+        <div class="quad quad-dim">
+          <div class="quad-top">
+            <div class="quad-title">AI Agent Platforms</div>
+            <div class="weakness">🔒 Single-player</div>
+          </div>
+          <div class="quad-names">
+            <span class="chip">Lindy AI</span>
+            <span class="chip">Relevance AI</span>
+            <span class="chip">Zapier AI</span>
+          </div>
+          <div class="quad-desc">Automate tasks for one business.<br>No cross-business network or shared intelligence.</div>
+          <div class="missing">
+            <span class="missing-item"><span class="missing-x">✕</span> Network Effects</span>
+            <span class="missing-item"><span class="missing-x">✕</span> Cross-biz Data</span>
+          </div>
+        </div>
+
+        <!-- Top-Right: TYPEWORK -->
+        <div class="quad quad-tw">
+          <div class="tw-badge">AI + Network + Zero Code</div>
+          <div class="tw-logo">TYPEWORK</div>
+          <div class="tw-tagline">AI agents that connect businesses into a self-growing network</div>
+          <div class="tw-has">
+            <span class="tw-has-item">✓ AI Agents</span>
+            <span class="tw-has-item">✓ Network Effects</span>
+            <span class="tw-has-item">✓ Zero Code</span>
+          </div>
+        </div>
+
+        <!-- Bottom-Left: Legacy SaaS -->
+        <div class="quad quad-dim">
+          <div class="quad-top">
+            <div class="quad-title">Legacy SaaS / ERP</div>
+            <div class="weakness">🏚️ Inward silos</div>
+          </div>
+          <div class="quad-names">
+            <span class="chip">Odoo</span>
+            <span class="chip">ServiceTitan</span>
+            <span class="chip">SAP</span>
+          </div>
+          <div class="quad-desc">Digitize operations inside one company.<br>Rigid config, no network effects, no AI.</div>
+          <div class="missing">
+            <span class="missing-item"><span class="missing-x">✕</span> AI Layer</span>
+            <span class="missing-item"><span class="missing-x">✕</span> Network Effects</span>
+            <span class="missing-item"><span class="missing-x">✕</span> Flexibility</span>
+          </div>
+        </div>
+
+        <!-- Bottom-Right: B2B Marketplaces -->
+        <div class="quad quad-dim">
+          <div class="quad-top">
+            <div class="quad-title">B2B Marketplaces</div>
+            <div class="weakness">🧊 Static matching</div>
+          </div>
+          <div class="quad-names">
+            <span class="chip">Thumbtack</span>
+            <span class="chip">Angi</span>
+            <span class="chip">Upwork</span>
+          </div>
+          <div class="quad-desc">Match buyers to sellers.<br>No AI agent layer, no workflow automation.</div>
+          <div class="missing">
+            <span class="missing-item"><span class="missing-x">✕</span> AI Automation</span>
+            <span class="missing-item"><span class="missing-x">✕</span> Workflow Engine</span>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>

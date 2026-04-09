@@ -22,17 +22,17 @@
   /* ── Header row: title + logos ── */
   .header {
     display: flex; align-items: center; gap: 40px;
-    margin-bottom: 36px;
+    margin-bottom: 28px;
   }
   .title {
-    font-size: 52px; font-weight: 800; white-space: nowrap;
+    font-size: 56px; font-weight: 800; white-space: nowrap;
   }
   .logos {
-    display: flex; align-items: center; gap: 24px;
+    display: flex; align-items: center; gap: 28px;
     flex-wrap: wrap;
   }
   .logos img {
-    height: 44px; opacity: 0.9;
+    height: 48px; opacity: 0.9;
     filter: grayscale(20%) brightness(1.8);
   }
   .logos img.logo-dark {
@@ -42,49 +42,49 @@
   /* ── Team grid: 2 rows ── */
   .team {
     flex: 1; display: flex; flex-direction: column;
-    gap: 28px; justify-content: center;
+    gap: 24px; justify-content: center;
   }
 
   .row {
-    display: flex; gap: 32px; justify-content: center;
+    display: flex; gap: 28px; justify-content: center;
   }
 
-  /* ── Person card ── */
+  /* ── Person card (core team row) ── */
   .person {
-    flex: 0 0 340px;
+    flex: 0 0 360px;
     display: flex; flex-direction: column; align-items: center;
     text-align: center;
   }
 
   .avatar {
-    width: 150px; height: 150px; border-radius: 50%;
+    width: 160px; height: 160px; border-radius: 50%;
     object-fit: cover;
     border: 3px solid rgba(255,255,255,0.08);
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
   .name {
-    font-size: 26px; font-weight: 700; margin-bottom: 2px;
+    font-size: 28px; font-weight: 700; margin-bottom: 2px;
   }
   .role {
-    font-size: 17px; font-weight: 600; color: #00d2be;
-    letter-spacing: 0.5px; margin-bottom: 10px;
+    font-size: 18px; font-weight: 600; color: #00d2be;
+    letter-spacing: 0.5px; margin-bottom: 8px;
   }
 
   .bio {
-    font-size: 16px; color: rgba(255,255,255,0.4);
-    line-height: 1.5;
+    font-size: 17px; color: rgba(255,255,255,0.4);
+    line-height: 1.55;
   }
   .bio strong {
     color: rgba(255,255,255,0.65); font-weight: 600;
   }
 
-  /* Founder row — larger */
-  .row-founders .person { flex: 0 0 420px; }
-  .row-founders .avatar { width: 170px; height: 170px; }
-  .row-founders .name { font-size: 30px; }
-  .row-founders .role { font-size: 18px; }
-  .row-founders .bio { font-size: 17px; }
+  /* ── Founder row — significantly larger ── */
+  .row-founders .person { flex: 0 0 520px; }
+  .row-founders .avatar { width: 210px; height: 210px; border-width: 4px; }
+  .row-founders .name { font-size: 38px; }
+  .row-founders .role { font-size: 22px; margin-bottom: 10px; }
+  .row-founders .bio { font-size: 19px; }
 </style>
 </head>
 <body>
