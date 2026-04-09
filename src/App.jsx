@@ -108,6 +108,19 @@ function PitchDeck() {
   const [jumpInput, setJumpInput] = useState('')
   const jumpTimer = useRef(null)
 
+  /* ── training mode (narration panel) ───────────────── */
+  const [trainingOpen, setTrainingOpen] = useState(false)
+  const [narrationData, setNarrationData] = useState([])
+
+  useEffect(() => {
+    fetch('/narration.json')
+      .then(r => r.json())
+      .then(setNarrationData)
+      .catch(() => {})
+  }, [])
+
+  const currentNarration = narrationData.find(n => n.slide === current)
+
   const slide = SLIDES[current]
   const isVideo = slide.type === 'video'
   const lastClickRef = useRef(0)
@@ -225,6 +238,9 @@ function PitchDeck() {
         } else if (document.fullscreenElement) {
           document.exitFullscreen()
         }
+      } else if (e.key === 'q' || e.key === 'Q') {
+        e.preventDefault()
+        setTrainingOpen(prev => !prev)
       } else if (e.key === 'f' || e.key === 'F') {
         if (!document.fullscreenElement) {
           containerRef.current?.requestFullscreen()
@@ -367,6 +383,44 @@ function PitchDeck() {
       >
         ›
       </button>
+
+      {/* Training mode — narration panel */}
+      <div
+        style={{
+          ...styles.narrationPanel,
+          transform: trainingOpen ? 'translateX(0)' : 'translateX(100%)',
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div style={styles.narrationHeader}>
+          <div style={styles.narrationBadge}>TRAINING MODE</div>
+          <button
+            style={styles.narrationClose}
+            onClick={() => setTrainingOpen(false)}
+          >✕</button>
+        </div>
+        {currentNarration ? (
+          <>
+            <div style={styles.narrationSlideInfo}>
+              Slide {current + 1} — {currentNarration.title}
+            </div>
+            <div style={styles.narrationScript}>
+              {currentNarration.script.split('\n').map((line, i) => (
+                <p key={i} style={{ marginBottom: line === '' ? 16 : 10 }}>
+                  {line}
+                </p>
+              ))}
+            </div>
+          </>
+        ) : (
+          <div style={styles.narrationEmpty}>
+            No narration for this slide.
+          </div>
+        )}
+        <div style={styles.narrationHint}>
+          Press <strong>Q</strong> to close
+        </div>
+      </div>
     </div>
   )
 }
@@ -493,5 +547,83 @@ const styles = {
     transition: 'background 0.2s',
     zIndex: 10,
     backdropFilter: 'blur(4px)',
+  },
+  /* ── Training mode narration panel ────────────────── */
+  narrationPanel: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: 420,
+    height: '100%',
+    background: 'rgba(11,17,32,0.95)',
+    backdropFilter: 'blur(20px)',
+    borderLeft: '1px solid rgba(0,210,190,0.15)',
+    zIndex: 50,
+    display: 'flex',
+    flexDirection: 'column',
+    transition: 'transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
+    cursor: 'default',
+    fontFamily: "'Inter', sans-serif",
+  },
+  narrationHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '20px 24px 16px',
+    borderBottom: '1px solid rgba(255,255,255,0.06)',
+  },
+  narrationBadge: {
+    fontSize: 12,
+    fontWeight: 700,
+    letterSpacing: 3,
+    color: '#00d2be',
+    background: 'rgba(0,210,190,0.1)',
+    border: '1.5px solid rgba(0,210,190,0.25)',
+    borderRadius: 20,
+    padding: '6px 14px',
+  },
+  narrationClose: {
+    background: 'rgba(255,255,255,0.06)',
+    border: 'none',
+    color: 'rgba(255,255,255,0.5)',
+    fontSize: 16,
+    width: 32,
+    height: 32,
+    borderRadius: '50%',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  narrationSlideInfo: {
+    padding: '16px 24px 8px',
+    fontSize: 14,
+    fontWeight: 600,
+    color: 'rgba(255,255,255,0.4)',
+    letterSpacing: 0.5,
+  },
+  narrationScript: {
+    flex: 1,
+    padding: '8px 24px 20px',
+    fontSize: 16,
+    fontWeight: 400,
+    color: 'rgba(255,255,255,0.75)',
+    lineHeight: 1.7,
+    overflowY: 'auto',
+  },
+  narrationEmpty: {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 16,
+    color: 'rgba(255,255,255,0.25)',
+  },
+  narrationHint: {
+    padding: '12px 24px',
+    borderTop: '1px solid rgba(255,255,255,0.06)',
+    fontSize: 13,
+    color: 'rgba(255,255,255,0.25)',
+    textAlign: 'center',
   },
 }

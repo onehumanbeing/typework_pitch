@@ -1,0 +1,77 @@
+[
+  {
+    "slide": 0,
+    "title": "The Question",
+    "script": "Hi, this is Henry from Typework.\nBefore we start, let's take a look at something.\nHere are two companies — same industry, same starting revenue. Five years later, they look very different.\nNow, if you're an investor, you'd definitely bet on the first one.\nBut what made the difference between them?"
+  },
+  {
+    "slide": 1,
+    "title": "The Answer",
+    "script": "The answer is clear: Company A is built on software: more income, more revenue.\nCompany B is built on headcount: more income, only more headcounts.\nWe see Company A went from 2 million to 50 millions. Only 10 people, serving 5000 clients. Margins get better every quarter.\nAnd Company B? 85 people with only 200 clients. Margins shrink every year.\nThey starting at the same with totally different outcome.\nWhy?"
+  },
+  {
+    "slide": 2,
+    "title": "The Problem",
+    "script": "Because every dollar of new revenue costs Company B another dollar of labor.\nThey hire to grow, and they hire to keep up, growing but breaking. Revenue stays flat, costs keep going up, and the margin just collapses.\nIt's the same three things killing them — people, actions, decisions — all manual, all slow, none of it scales.\nAnd this isn't just a Company B problem.\nThis is why 95% of SMEs stay below 10 million. They can't outgrow their own operating cost."
+  },
+  {
+    "slide": 3,
+    "title": "The Transformation",
+    "script": "So what if Company B could fly — just like Company A?\nWith a one-stop platform. Same business, but AI agents do the rest.\nWe turn Company B into Company A — without hiring a single engineer."
+  },
+  {
+    "slide": 4,
+    "title": "Introducing Typework",
+    "script": "Introducing Typework. We make every business scalable.\nOne platform to launch your Full-stack company.\n\nHow big is the market? 95% of all businesses in the world are SMEs — and they all share the same problem.\nSo who do we go after first?\n\nOwners whose P&L has been declining. They've had their peak — they've made real money before — they know what the good days look like.\nBut now costs keep rising and margins keep shrinking.\nWe go straight to the boss. This is a top-down decision. The boss feels the pain, the boss makes the call."
+  },
+  {
+    "slide": 5,
+    "title": "Meet Our First Customer",
+    "script": "Meet Mark. He runs a service business in Hong Kong — 5 to 50 staff, swimming coaches, yoga studios, catering.\nHis entire operating system? WhatsApp, Instagram DMs, and Excel.\nAt 8am, bookings flood in from three channels — no unified inbox. He replies one by one. Some get missed.\nBy 10am, he's manually entering bookings into Excel. Wrong dates, duplicate rows. Three bookings lost.\nAt 2pm, staff asks about the schedule — he scrolls through five group chats. No single source of truth.\nMonth-end? Payroll and invoices don't match. Four hours checking. Money already out the door.\nAt 11pm, he's still replying. Tomorrow will be the same.\nNo system. No automation. No way out. That's who we're building for."
+  },
+  {
+    "slide": 6,
+    "title": "What Typework Does",
+    "script": "So how does Typework actually solve this?\nThink of Typework as your own CIO.\nToday, if you're an SME trying to scale, somebody will tell you: get a CRM, set up an ERP, add a POS system, implement HR tools — and you'll probably still need to hire an engineering team.\nBut these systems are expensive, inflexible, and the worst part? They don't talk to each other.\nWith Typework, you don't need any of that. Just upload your documents, describe your business — and your AI agent handles the rest.\nMore importantly, your agent connects your business to a network where businesses agents collaborate naturally, unlocking new opportunities."
+  },
+  {
+    "slide": 7,
+    "title": "The Shift + Opportunity",
+    "script": "And once your Agent on the network, here's what happens.\nTraditional supply chains are linear — five businesses, four connections.\nOn Typework, those same five businesses create fifteen connections. And it compounds fast.\nEvery new business that joins makes the whole network more valuable."
+  },
+  {
+    "slide": 8,
+    "title": "Synergy: Opportunity Sharing",
+    "script": "Let me show you how this actually works.\nOur client, IX Catering uploads their docs, Typework builds a booking agent automatically.\nCustomer books a table, mentions it's his wife's birthday.\nThe agent confirms — and because it's connected to the network — it pulls in flowers from Florist B and a cake from Cake Shop C.\nWith one booking, three business opportunity was created with zero human coordination."
+  },
+  {
+    "slide": 9,
+    "title": "Synergy: Smart Bundling",
+    "script": "Another example: Weddings — one booking activates nine vendor agents in minutes.\nAverage booking value goes up for 2400 dollars, just from proactive vendor bundling.\nSame pattern everywhere. One trigger, multiple businesses, real dollars."
+  },
+  {
+    "slide": 10,
+    "title": "Competitive Landscape",
+    "script": "Where do we sit?\nLook at the market today. On one side — AI agent tools, like Zapier. They automate tasks… but only inside one business.\nThen marketplaces such as Thumbtack. They connect buyers and sellers… but there's no intelligence.\nAnd legacy SaaS like Odoo. They digitize operations… but everything stays siloed.\nSo everyone stops there. We start here. Typework combines three things: AI agents, a business network, and zero code platform."
+  },
+  {
+    "slide": 11,
+    "title": "GTM Strategy",
+    "script": "So how do we go to market? We have four growth engines that feed into each other like a flywheel.\nFirst, Industry AI Templates. Our solution engineers build the first templates with real customers. Then AI learns the best practices, distills the skills, and scales them across verticals. Each template becomes its own campaign page for customer acquisition.\nSecond, Ecosystem Integrations. We meet users where they already are — WhatsApp, Lark, Slack, Google Business. They experience Typework's core value with zero friction, then convert to the full platform.\nThird, Agent Network Effects. Once we hit critical mass in a city, the network grows organically. Businesses start inviting their own supply chain. Want more business opportunities? You have to be on Typework.\nAnd fourth, Ecosystem GTM Partners. Think Hong Kong Science Park, co-working spaces, franchise networks. One partnership can onboard 50 to 200 businesses at once.\nEach engine feeds the next. Together, they create compounding growth that's very hard to replicate."
+  },
+  {
+    "slide": 12,
+    "title": "Team",
+    "script": "Quick introduction on the team. James and I are here at Antler Disrupt.\nWe've worked together for six years — we know how to ship.\nOur CTO Fei Long built PyGWalker, an open-source project with over 15,000 GitHub stars — he knows how to build products people actually use.\nWe've built and scaled products before. This time we're building one together."
+  },
+  {
+    "slide": 13,
+    "title": "Traction",
+    "script": "We're not just building — we're already in market.\nAround 20 companies in our pipeline. Multiple customers are live and deploying pilots right now.\nAnd we've got early enterprise traction — a Hong Kong public sector organization with over 1,500 employees.\nThe demand is real, and it's inbound."
+  },
+  {
+    "slide": 14,
+    "title": "Closing",
+    "script": "Thank you. We're Typework.\nWe make every business scalable.\nLet's talk."
+  }
+]
