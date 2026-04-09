@@ -219,25 +219,25 @@
         <div class="big-sub">They all share the <strong>same scaling problem</strong>.<br>This is a global, horizontal market.</div>
 
         <div class="curve-wrap">
-          <svg viewBox="0 0 700 220" width="100%" height="100%" preserveAspectRatio="none">
-            <!-- Revenue curve: peak then long decline -->
-            <path d="M0,180 C50,165 120,80 240,35 C300,15 330,14 360,18 C440,38 520,85 600,140 C650,165 680,178 700,185"
-                  fill="none" stroke="#ff4d6a" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
-            <!-- Fill under curve -->
-            <path d="M0,180 C50,165 120,80 240,35 C300,15 330,14 360,18 C440,38 520,85 600,140 C650,165 680,178 700,185 L700,220 L0,220 Z"
-                  fill="url(#plGrad)" opacity="0.3"/>
-            <!-- Peak dot -->
-            <circle cx="335" cy="15" r="5" fill="#ff4d6a" opacity="0.7"/>
-            <text x="348" y="20" font-size="14" font-weight="700" fill="#ff4d6a" font-family="Inter" opacity="0.6">peak</text>
-            <!-- OPEX dashed rising -->
-            <path d="M0,190 C150,180 350,160 500,135 C600,115 660,100 700,90"
-                  fill="none" stroke="#ff4d6a" stroke-width="2" stroke-dasharray="8,5" opacity="0.3"/>
+          <!-- Curves (stretched to fill width) -->
+          <svg viewBox="0 0 700 220" width="100%" height="100%" preserveAspectRatio="none" style="position:absolute;inset:0">
             <defs>
               <linearGradient id="plGrad" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stop-color="#ff4d6a" stop-opacity="0.35"/>
                 <stop offset="100%" stop-color="#ff4d6a" stop-opacity="0"/>
               </linearGradient>
             </defs>
+            <path d="M0,180 C50,165 120,80 240,35 C300,15 330,14 360,18 C440,38 520,85 600,140 C650,165 680,178 700,185"
+                  fill="none" stroke="#ff4d6a" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+            <path d="M0,180 C50,165 120,80 240,35 C300,15 330,14 360,18 C440,38 520,85 600,140 C650,165 680,178 700,185 L700,220 L0,220 Z"
+                  fill="url(#plGrad)" opacity="0.3"/>
+            <path d="M0,190 C150,180 350,160 500,135 C600,115 660,100 700,90"
+                  fill="none" stroke="#ff4d6a" stroke-width="2" stroke-dasharray="8,5" opacity="0.3"/>
+          </svg>
+          <!-- Peak label (not stretched) -->
+          <svg viewBox="0 0 700 220" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0">
+            <circle cx="335" cy="15" r="6" fill="#ff4d6a" opacity="0.8"/>
+            <text x="350" y="21" font-size="16" font-weight="700" fill="#ff4d6a" font-family="Inter" opacity="0.7">peak</text>
           </svg>
         </div>
       </div>
