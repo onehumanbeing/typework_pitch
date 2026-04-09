@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>Synergy: Opportunity Sharing</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1920px; height: 1080px;
+    font-family: 'Inter', sans-serif;
+    background: #0b1120; color: #fff; overflow: hidden;
+  }
+  .slide {
+    width: 100%; height: 100%;
+    padding: 48px 72px 64px;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .logo { position: absolute; top: 44px; right: 72px; }
+  .logo img { height: 48px; }
+  .section-label {
+    font-size: 15px; font-weight: 600; letter-spacing: 5px;
+    text-transform: uppercase; color: #00d2be; margin-bottom: 10px;
+  }
+  .title {
+    font-size: 46px; font-weight: 700; line-height: 1.15; margin-bottom: 24px;
+  }
+  .title .highlight { color: #00d2be; }
+
+  .content {
+    flex: 1; display: flex; gap: 56px; min-height: 0;
+  }
+
+  /* === LEFT: Diagram === */
+  .diagram-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .flow-diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+    max-width: 720px;
+  }
+
+  .node-box {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 28px;
+    border-radius: 16px;
+    min-width: 240px;
+    justify-content: center;
+  }
+  .node-box.source {
+    background: rgba(255,255,255,0.04);
+    border: 2px solid rgba(255,255,255,0.15);
+  }
+  .node-box.hub {
+    background: rgba(0,210,190,0.15);
+    border: 2.5px solid rgba(0,210,190,0.5);
+    padding: 24px 36px;
+  }
+  .node-box.vendor {
+    background: rgba(0,210,190,0.06);
+    border: 2px solid rgba(0,210,190,0.3);
+  }
+
+  .node-emoji { font-size: 28px; line-height: 1; }
+  .node-info {}
+  .node-name { font-size: 22px; font-weight: 700; color: #fff; }
+  .node-box.hub .node-name { color: #00d2be; font-size: 26px; }
+  .node-sub { font-size: 16px; font-weight: 500; color: rgba(255,255,255,0.4); margin-top: 2px; }
+  .node-box.hub .node-sub { color: rgba(0,210,190,0.6); }
+
+  /* Arrow connector */
+  .arrow-down {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    position: relative;
+    height: 50px;
+  }
+  .arrow-line {
+    width: 2.5px;
+    flex: 1;
+    background: rgba(0,210,190,0.35);
+  }
+  .arrow-tip {
+    width: 0; height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 10px solid rgba(0,210,190,0.5);
+  }
+  .arrow-label {
+    position: absolute;
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 15px;
+    font-weight: 600;
+    color: #00d2be;
+    background: rgba(0,210,190,0.08);
+    padding: 6px 16px;
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+
+  /* Fan-out row */
+  .fan-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .fan-connector {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    height: 50px;
+    width: 100%;
+    max-width: 620px;
+  }
+  .fan-connector::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2.5px;
+    height: 20px;
+    background: rgba(0,210,190,0.3);
+    transform: translateX(-50%);
+  }
+  .fan-connector::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 10%;
+    right: 10%;
+    height: 2.5px;
+    background: rgba(0,210,190,0.3);
+  }
+  .fan-branch {
+    position: absolute;
+    top: 20px;
+    width: 2.5px;
+    height: 30px;
+    background: rgba(0,210,190,0.3);
+  }
+  .fan-branch:nth-child(1) { left: 10%; }
+  .fan-branch:nth-child(2) { left: 50%; transform: translateX(-50%); }
+  .fan-branch:nth-child(3) { right: 10%; }
+
+  /* Notification bar */
+  .notif-bar {
+    margin-top: 28px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 24px;
+    background: rgba(0,210,190,0.06);
+    border: 1.5px solid rgba(0,210,190,0.15);
+    border-radius: 14px;
+    max-width: 660px;
+    width: 100%;
+  }
+  .notif-text {
+    font-size: 17px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.55);
+  }
+  .notif-text strong {
+    color: #00d2be;
+    font-weight: 700;
+  }
+
+  /* === RIGHT: Explanation === */
+  .explain-panel {
+    flex: 0.9;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .scenario-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 22px;
+    background: rgba(0,210,190,0.08);
+    border: 1.5px solid rgba(0,210,190,0.2);
+    border-radius: 40px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #00d2be;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    width: fit-content;
+  }
+
+  .explain-title {
+    font-size: 34px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+  }
+
+  .explain-desc {
+    font-size: 19px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.55;
+  }
+  .explain-desc strong { color: #00d2be; font-weight: 700; }
+
+  .step-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .step-icon {
+    width: 48px; height: 48px; min-width: 48px;
+    border-radius: 50%;
+    background: rgba(0,210,190,0.1);
+    border: 2px solid rgba(0,210,190,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+  }
+
+  .step-body {
+    padding-top: 4px;
+  }
+
+  .step-label {
+    font-size: 21px; font-weight: 700; color: #fff;
+    margin-bottom: 3px;
+  }
+
+  .step-detail {
+    font-size: 17px; font-weight: 400; color: rgba(255,255,255,0.4);
+    line-height: 1.45;
+  }
+  .step-detail strong { color: rgba(255,255,255,0.7); font-weight: 600; }
+
+  /* Stats strip */
+  .stats-strip {
+    display: flex; gap: 20px; margin-top: 8px;
+  }
+  .stat-card {
+    flex: 1;
+    background: rgba(0,210,190,0.06);
+    border: 1.5px solid rgba(0,210,190,0.12);
+    border-radius: 16px;
+    padding: 18px 20px;
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 40px; font-weight: 800; color: #00d2be;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.4);
+    margin-top: 6px; line-height: 1.35;
+  }
+
+  /* Bottom bar */
+  .bottom-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 56px;
+    background: rgba(0,210,190,0.04);
+    border-top: 1px solid rgba(0,210,190,0.08);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .bottom-text {
+    font-size: 19px; font-weight: 600; color: #00d2be; opacity: 0.7;
+  }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="logo"><img src="Logo.png" alt="Typework"></div>
+  <div class="section-label">Agent Network Synergy 1</div>
+  <div class="title">Every booking becomes a <span class="highlight">shared opportunity.</span></div>
+
+  <div class="content">
+    <!-- LEFT: Diagram -->
+    <div class="diagram-panel">
+      <div class="flow-diagram">
+        <!-- Source: Restaurant A -->
+        <div class="node-box source">
+          <div class="node-emoji">🍽️</div>
+          <div class="node-info">
+            <div class="node-name">Restaurant A</div>
+            <div class="node-sub">receives a birthday booking</div>
+          </div>
+        </div>
+
+        <!-- Arrow down -->
+        <div class="arrow-down">
+          <div class="arrow-line"></div>
+          <div class="arrow-tip"></div>
+          <div class="arrow-label">⚡ booking triggers network</div>
+        </div>
+
+        <!-- Hub: Typework -->
+        <div class="node-box hub">
+          <div class="node-emoji">🔗</div>
+          <div class="node-info">
+            <div class="node-name">Typework Agent Network</div>
+            <div class="node-sub">AI matches complementary vendors</div>
+          </div>
+        </div>
+
+        <!-- Fan out connector -->
+        <div class="fan-connector">
+          <div class="fan-branch"></div>
+          <div class="fan-branch"></div>
+          <div class="fan-branch"></div>
+        </div>
+
+        <!-- Fan-out: 3 vendors -->
+        <div class="fan-row">
+          <div class="node-box vendor">
+            <div class="node-emoji">💐</div>
+            <div class="node-info">
+              <div class="node-name">Florist B</div>
+              <div class="node-sub">bouquet offer</div>
+            </div>
+          </div>
+          <div class="node-box vendor">
+            <div class="node-emoji">🎂</div>
+            <div class="node-info">
+              <div class="node-name">Cake Shop C</div>
+              <div class="node-sub">birthday cake</div>
+            </div>
+          </div>
+          <div class="node-box vendor">
+            <div class="node-emoji">📸</div>
+            <div class="node-info">
+              <div class="node-name">Photo Studio D</div>
+              <div class="node-sub">photo package</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notification -->
+        <div class="notif-bar">
+          <div class="notif-text">
+            💬 "Birthday dinner booked! <strong>30% off flowers + a custom cake await 🎉</strong>"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Explanation -->
+    <div class="explain-panel">
+      <div class="scenario-badge">🤝 Opportunity Sharing</div>
+      <div class="explain-title">One customer event, multiple businesses benefit.</div>
+      <div class="explain-desc">
+        When a customer books, <strong>agents automatically identify and share relevant opportunities</strong> with complementary businesses — zero manual coordination.
+      </div>
+
+      <div class="step-list">
+        <div class="step">
+          <div class="step-icon">🔍</div>
+          <div class="step-body">
+            <div class="step-label">Booking triggers AI matching</div>
+            <div class="step-detail">Agent detects <strong>event context</strong> (birthday, meeting, wedding) and finds complementary vendors.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-icon">🎁</div>
+          <div class="step-body">
+            <div class="step-label">Personalized offers auto-generated</div>
+            <div class="step-detail">Each vendor's agent creates a <strong>tailored offer</strong> matching the occasion.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-icon">💰</div>
+          <div class="step-body">
+            <div class="step-label">Revenue shared across network</div>
+            <div class="step-detail">3 businesses earn from <strong>1 booking</strong>. Customer gets a better experience.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-strip">
+        <div class="stat-card">
+          <div class="stat-num">3x</div>
+          <div class="stat-label">revenue<br>per booking</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">0</div>
+          <div class="stat-label">manual<br>coordination</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <div class="bottom-text">Every booking is a growth engine for the entire network.</div>
+  </div>
+</div>
+</body>
+</html>

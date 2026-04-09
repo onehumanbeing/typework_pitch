@@ -60,18 +60,16 @@ function LockScreen() {
   Flow:
   0-3   → video (slide1–4.mp4)
   4     → html  (slide_5_market_who_joins)
-  5     → html  (slide_meet_first_customer) ← NEW: ICP persona
+  5     → html  (slide_meet_first_customer) ← ICP persona
   6     → html  (slide_what_typework_does)
   7     → html  (slide_5_shift_opportunity)
-  8     → image (IX Catering — PPTX slide 9)
-  9     → image (Property Management — PPTX slide 10)
-  10    → image (Wedding & Event — PPTX slide 11)
-  11    → image (Competitive Landscape — PPTX slide 12)
-  12    → html  (slide_moat)
-  13    → html  (slide_why_now)
-  14    → image (Team — PPTX slide 15)
-  15    → html  (slide_traction)
-  16    → image (Closing — PPTX slide 17)
+  8     → html  (Synergy 1: Opportunity Sharing — 商机共享)
+  9     → html  (Synergy 2: Smart Bundling)
+  10    → html  (Competitive Landscape)
+  11    → html  (slide_moat)
+  12    → html  (slide_team)
+  13    → html  (slide_traction)
+  14    → image (Closing)
 */
 
 const SLIDES = [
@@ -83,9 +81,8 @@ const SLIDES = [
   { type: 'html',  src: '/html/slide_meet_first_customer.html' },
   { type: 'html',  src: '/html/slide_what_typework_does.html' },
   { type: 'html',  src: '/html/slide_5_shift_opportunity.html' },
-  { type: 'image', src: '/slides/slide-08.jpg' },
-  { type: 'image', src: '/slides/slide-09.jpg' },
-  { type: 'image', src: '/slides/slide-10.jpg' },
+  { type: 'html',  src: '/html/slide_synergy_opportunity_sharing.html' },
+  { type: 'html',  src: '/html/slide_synergy_bundle.html' },
   { type: 'html',  src: '/html/slide_competitive.html' },
   { type: 'html',  src: '/html/slide_moat.html' },
   { type: 'html',  src: '/html/slide_team.html' },
