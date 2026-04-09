@@ -112,6 +112,7 @@ function PitchDeck() {
 
   const slide = SLIDES[current]
   const isVideo = slide.type === 'video'
+  const lastClickRef = useRef(0)
 
   /* ── preload all media on mount ──────────────────────── */
   const [loadProgress, setLoadProgress] = useState(0)
@@ -158,7 +159,18 @@ function PitchDeck() {
       videoRef.current?.play()
       return
     }
-    if (isVideo && videoState === 'playing') return
+    if (isVideo && videoState === 'playing') {
+      const now = Date.now()
+      if (now - lastClickRef.current < 500) {
+        videoRef.current?.pause()
+        if (current < TOTAL - 1) {
+          setCurrent(c => c + 1)
+          setVideoState('poster')
+        }
+      }
+      lastClickRef.current = now
+      return
+    }
     if (current < TOTAL - 1) {
       setCurrent(c => c + 1)
       setVideoState('poster')
