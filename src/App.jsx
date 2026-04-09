@@ -66,7 +66,7 @@ function LockScreen() {
   8     → html  (Synergy 1: Opportunity Sharing — 商机共享)
   9     → html  (Synergy 2: Smart Bundling)
   10    → html  (Competitive Landscape)
-  11    → html  (slide_moat)
+  11    → html  (GTM Strategy)
   12    → html  (slide_team)
   13    → html  (slide_traction)
   14    → image (Closing)
@@ -84,7 +84,7 @@ const SLIDES = [
   { type: 'html',  src: '/html/slide_synergy_opportunity_sharing.html' },
   { type: 'html',  src: '/html/slide_synergy_bundle.html' },
   { type: 'html',  src: '/html/slide_competitive.html' },
-  { type: 'html',  src: '/html/slide_moat.html' },
+  { type: 'html',  src: '/html/slide_gtm_strategy.html' },
   { type: 'html',  src: '/html/slide_team.html' },
   { type: 'html',  src: '/html/slide_traction.html' },
   { type: 'image', src: '/slides/slide-closing.png' },
