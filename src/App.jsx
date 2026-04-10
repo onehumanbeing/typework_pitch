@@ -266,6 +266,18 @@ function PitchDeck() {
     }
   }, [current])
 
+  /* ── pause last video just before end to avoid flash ── */
+  const onVideoTimeUpdate = useCallback(() => {
+    if (current !== LAST_VIDEO_INDEX) return
+    const v = videoRef.current
+    if (!v || !v.duration || isNaN(v.duration)) return
+    if (v.paused) return
+    if (v.duration - v.currentTime < 0.15) {
+      v.pause()
+      setVideoState('ended')
+    }
+  }, [current])
+
   /* ── touch / swipe ──────────────────────────────────── */
   const touchStart = useRef(null)
   const onTouchStart = (e) => { touchStart.current = e.touches[0].clientX }
@@ -278,6 +290,9 @@ function PitchDeck() {
   }
 
   /* ── render slide content ───────────────────────────── */
+  /* Note: HTML iframes are NOT rendered here — they are mounted once
+     (all at startup) and shown/hidden via display so jumping to any
+     slide is instant with no reload flash. */
   const renderSlide = () => {
     if (slide.type === 'video') {
       return (
@@ -288,29 +303,14 @@ function PitchDeck() {
           style={styles.media}
           playsInline
           preload="auto"
+          onTimeUpdate={onVideoTimeUpdate}
           onEnded={onVideoEnded}
         />
       )
     }
 
     if (slide.type === 'html') {
-      return (
-        <div style={styles.iframeContainer}>
-          <iframe
-            key={slide.src}
-            src={slide.src}
-            style={{
-              ...styles.iframe,
-              transform: `scale(${iframeScale})`,
-            }}
-            title={`Slide ${current + 1}`}
-            sandbox="allow-same-origin"
-            scrolling="no"
-          />
-          {/* Transparent overlay to capture clicks/prevent iframe stealing focus */}
-          <div style={styles.iframeOverlay} />
-        </div>
-      )
+      return null
     }
 
     return (
@@ -344,6 +344,33 @@ function PitchDeck() {
 
       <div style={styles.slideWrapper}>
         {renderSlide()}
+
+        {/* All HTML iframes are mounted once and kept in memory.
+            Non-current ones are display:none so switching is instant. */}
+        {SLIDES.map((s, i) => (
+          s.type === 'html' ? (
+            <div
+              key={s.src}
+              style={{
+                ...styles.iframeContainer,
+                display: i === current ? 'flex' : 'none',
+              }}
+            >
+              <iframe
+                src={s.src}
+                style={{
+                  ...styles.iframe,
+                  transform: `scale(${iframeScale})`,
+                }}
+                title={`Slide ${i + 1}`}
+                sandbox="allow-same-origin"
+                scrolling="no"
+              />
+              {/* Transparent overlay to capture clicks/prevent iframe stealing focus */}
+              <div style={styles.iframeOverlay} />
+            </div>
+          ) : null
+        ))}
       </div>
 
       {/* Progress bar */}
