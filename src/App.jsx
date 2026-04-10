@@ -208,8 +208,7 @@ function PitchDeck() {
       setVideoState('playing')
       const v = videoRefs.current[current]
       if (v) {
-        // Restart from the beginning if the user is replaying this
-        // video, or the rAF paused it near the end last time.
+        v.style.opacity = '1'
         try { v.currentTime = 0 } catch (_) {}
         // Keep overlay up until the video is actually rendering.
         const onPlaying = () => {
@@ -315,6 +314,9 @@ function PitchDeck() {
 
   /* ── video ended ────────────────────────────────────── */
   const onVideoEnded = useCallback(() => {
+    const v = videoRefs.current[current]
+    if (v) v.style.opacity = '0'
+
     const endFrame = SLIDES[current]?.endFrame
     if (endFrame) setOverlayImage(endFrame)
 
@@ -337,7 +339,8 @@ function PitchDeck() {
     if (!v) return
 
     // When landing on a video slide (e.g. via arrow / jump), reset to
-    // its first frame so the user never sees a previously paused state.
+    // its first frame and ensure the video element is visible.
+    v.style.opacity = '1'
     if (v.paused) {
       try { v.currentTime = 0 } catch (_) {}
     }
@@ -349,6 +352,7 @@ function PitchDeck() {
       if (!vid || handled) { rafId = null; return }
       if (vid.ended) {
         handled = true
+        vid.style.opacity = '0'
         const endFrame = SLIDES[current].endFrame
         if (endFrame) setOverlayImage(endFrame)
         rafId = null
@@ -358,6 +362,7 @@ function PitchDeck() {
       if (vid.duration && !isNaN(vid.duration) && vid.duration - vid.currentTime < 0.5) {
         handled = true
         vid.pause()
+        vid.style.opacity = '0'
 
         // Show the end-frame overlay immediately to cover the flash.
         const endFrame = SLIDES[current].endFrame
@@ -483,10 +488,18 @@ function PitchDeck() {
                 background: '#0a0e1a',
               }}
             >
+              {s.endFrame && (
+                <img
+                  src={s.endFrame}
+                  alt=""
+                  draggable={false}
+                  style={styles.endFrameBg}
+                />
+              )}
               <video
                 ref={(el) => { videoRefs.current[i] = el }}
                 src={s.src}
-                style={styles.media}
+                style={{ ...styles.media, position: 'relative', zIndex: 1 }}
                 playsInline
                 preload="auto"
                 onEnded={onVideoEnded}
@@ -647,6 +660,14 @@ const styles = {
     maxHeight: '100%',
     objectFit: 'contain',
     display: 'block',
+  },
+  endFrameBg: {
+    position: 'absolute',
+    maxWidth: '100%',
+    maxHeight: '100%',
+    objectFit: 'contain',
+    userSelect: 'none',
+    pointerEvents: 'none',
   },
   iframeContainer: {
     position: 'relative',
