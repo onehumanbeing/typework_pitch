@@ -358,15 +358,21 @@ function PitchDeck() {
       <div style={styles.slideWrapper}>
         {renderSlide()}
 
-        {/* All HTML iframes are mounted once and kept in memory.
-            Non-current ones are display:none so switching is instant. */}
+        {/* All HTML iframes are mounted once and stacked absolutely.
+            We toggle opacity (not display) so the browser keeps
+            painting every iframe — switching becomes truly instant
+            with no repaint flash. */}
         {SLIDES.map((s, i) => (
           s.type === 'html' ? (
             <div
               key={s.src}
               style={{
                 ...styles.iframeContainer,
-                display: i === current ? 'flex' : 'none',
+                position: 'absolute',
+                inset: 0,
+                opacity: i === current ? 1 : 0,
+                pointerEvents: i === current ? 'auto' : 'none',
+                zIndex: i === current ? 2 : 1,
               }}
             >
               <iframe
