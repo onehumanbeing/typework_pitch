@@ -200,9 +200,21 @@ function PitchDeck() {
   /* ── navigation ─────────────────────────────────────── */
   const goNext = useCallback(() => {
     if (isVideo && videoState === 'poster') {
-      clearOverlay()
       setVideoState('playing')
-      videoRef.current?.play()
+      const v = videoRef.current
+      if (v) {
+        // Keep the overlay visible until the video actually starts
+        // rendering frames. Clearing on 'playing' event guarantees
+        // there's no blank flash between overlay and first video frame.
+        const onPlaying = () => {
+          clearOverlay()
+          v.removeEventListener('playing', onPlaying)
+        }
+        v.addEventListener('playing', onPlaying)
+        v.play().catch(() => clearOverlay())
+      } else {
+        clearOverlay()
+      }
       return
     }
     if (isVideo && videoState === 'playing') {
@@ -331,20 +343,18 @@ function PitchDeck() {
 
         if (current === LAST_VIDEO_INDEX) {
           setVideoState('ended')
-          // Last video: keep overlay visible as the final still
-          // (cleared when user navigates away).
+          // Last video: overlay stays as the final still frame
+          // until the user navigates away.
         } else if (current < TOTAL - 1) {
           // Give the overlay one paint cycle to appear, then advance.
-          // Keep the overlay up for ~500ms so the next slide has time
-          // to fully mount and decode its first frame.
+          // The overlay remains visible over the new slide (in poster
+          // state) until the user clicks to play the next video and
+          // its 'playing' event fires (cleared in goNext). This is
+          // the only way to guarantee no blank frame between the
+          // previous video and the next video's first rendered frame.
           requestAnimationFrame(() => {
             setCurrent(c => c + 1)
             setVideoState('poster')
-            if (overlayTimerRef.current) clearTimeout(overlayTimerRef.current)
-            overlayTimerRef.current = setTimeout(() => {
-              setOverlayImage(null)
-              overlayTimerRef.current = null
-            }, 500)
           })
         }
         rafId = null
@@ -467,14 +477,18 @@ function PitchDeck() {
           ) : null
         ))}
 
-        {/* End-frame still overlay — covers browser end-of-video flash */}
+        {/* End-frame still overlay — covers browser end-of-video flash.
+            Wrapped in a dark-bg container so any letterbox area doesn't
+            leak through to the paused video element underneath. */}
         {overlayImage && (
-          <img
-            src={overlayImage}
-            alt=""
-            draggable={false}
-            style={styles.endFrameOverlay}
-          />
+          <div style={styles.endFrameOverlayWrap}>
+            <img
+              src={overlayImage}
+              alt=""
+              draggable={false}
+              style={styles.endFrameOverlay}
+            />
+          </div>
         )}
       </div>
 
@@ -607,14 +621,21 @@ const styles = {
     inset: 0,
     zIndex: 1,
   },
-  endFrameOverlay: {
+  endFrameOverlayWrap: {
     position: 'absolute',
     inset: 0,
-    width: '100%',
-    height: '100%',
-    objectFit: 'contain',
     zIndex: 4,
+    background: '#0a0e1a',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     pointerEvents: 'none',
+  },
+  endFrameOverlay: {
+    maxWidth: '100%',
+    maxHeight: '100%',
+    objectFit: 'contain',
+    display: 'block',
     userSelect: 'none',
   },
   progressTrack: {
