@@ -103,12 +103,17 @@ function PitchDeck() {
   const [current, setCurrent] = useState(0)
   const [videoState, setVideoState] = useState('poster')
   /* overlayImage: when a video nears its end, we paint its endFrame
-     image on top of the whole slideWrapper to cover the browser's
-     end-of-video flash. Held persistent across slide transitions
-     until the next slide has time to mount, then cleared. */
+     image on top of the whole slideWrapper to cover any visual hiccup
+     between the paused video and the next slide. */
   const [overlayImage, setOverlayImage] = useState(null)
   const overlayTimerRef = useRef(null)
-  const videoRef = useRef(null)
+  /* All 4 videos are mounted once at startup and stacked absolutely
+     inside slideWrapper. videoRefs[i] → the DOM element for slide i.
+     Only the current one plays; others stay paused showing their
+     first decoded frame. Switching slides is a pure opacity swap
+     with zero unmount/remount so there is no frame gap. */
+  const videoRefs = useRef([])
+  const getCurVideo = () => videoRefs.current[current] || null
   const containerRef = useRef(null)
 
   const [jumpInput, setJumpInput] = useState('')
@@ -201,11 +206,12 @@ function PitchDeck() {
   const goNext = useCallback(() => {
     if (isVideo && videoState === 'poster') {
       setVideoState('playing')
-      const v = videoRef.current
+      const v = videoRefs.current[current]
       if (v) {
-        // Keep the overlay visible until the video actually starts
-        // rendering frames. Clearing on 'playing' event guarantees
-        // there's no blank flash between overlay and first video frame.
+        // Restart from the beginning if the user is replaying this
+        // video, or the rAF paused it near the end last time.
+        try { v.currentTime = 0 } catch (_) {}
+        // Keep overlay up until the video is actually rendering.
         const onPlaying = () => {
           clearOverlay()
           v.removeEventListener('playing', onPlaying)
@@ -220,7 +226,7 @@ function PitchDeck() {
     if (isVideo && videoState === 'playing') {
       const now = Date.now()
       if (now - lastClickRef.current < 500) {
-        videoRef.current?.pause()
+        videoRefs.current[current]?.pause()
         if (current < TOTAL - 1) {
           clearOverlay()
           setCurrent(c => c + 1)
@@ -324,13 +330,19 @@ function PitchDeck() {
          until the next slide has time to mount. ──────────────── */
   useEffect(() => {
     if (SLIDES[current].type !== 'video') return
-    const v = videoRef.current
+    const v = videoRefs.current[current]
     if (!v) return
+
+    // When landing on a video slide (e.g. via arrow / jump), reset to
+    // its first frame so the user never sees a previously paused state.
+    if (v.paused) {
+      try { v.currentTime = 0 } catch (_) {}
+    }
 
     let rafId = null
     let handled = false
     const check = () => {
-      const vid = videoRef.current
+      const vid = videoRefs.current[current]
       if (!vid || handled) { rafId = null; return }
       if (vid.paused || vid.ended) { rafId = null; return }
       if (vid.duration && !isNaN(vid.duration) && vid.duration - vid.currentTime < 0.3) {
@@ -371,6 +383,13 @@ function PitchDeck() {
     v.addEventListener('play', startCheck)
     if (!v.paused) startCheck()
 
+    // Pause any other video that might still be running from a
+    // previous slide — defensive; switching shouldn't leave one
+    // playing in the background.
+    videoRefs.current.forEach((other, j) => {
+      if (other && j !== current && !other.paused) other.pause()
+    })
+
     return () => {
       v.removeEventListener('play', startCheck)
       if (rafId) cancelAnimationFrame(rafId)
@@ -389,27 +408,14 @@ function PitchDeck() {
   }
 
   /* ── render slide content ───────────────────────────── */
-  /* Note: HTML iframes are NOT rendered here — they are mounted once
-     (all at startup) and shown/hidden via display so jumping to any
-     slide is instant with no reload flash. */
+  /* Note: videos AND html iframes are NOT rendered here — they are
+     both mounted once at startup and stacked absolutely in the
+     slideWrapper. Switching slides is a pure opacity swap with no
+     unmount/remount, which is the only way to guarantee zero frame
+     gap between the previous and the next slide. Images are cheap
+     to swap so we still render them here normally. */
   const renderSlide = () => {
-    if (slide.type === 'video') {
-      return (
-        <video
-          ref={videoRef}
-          key={slide.src}
-          src={slide.src}
-          style={styles.media}
-          playsInline
-          preload="auto"
-          onEnded={onVideoEnded}
-        />
-      )
-    }
-
-    if (slide.type === 'html') {
-      return null
-    }
+    if (slide.type === 'video' || slide.type === 'html') return null
 
     return (
       <img
@@ -447,6 +453,38 @@ function PitchDeck() {
             We toggle opacity (not display) so the browser keeps
             painting every iframe — switching becomes truly instant
             with no repaint flash. */}
+        {/* All videos are mounted once and stacked absolutely. Only
+            the current one plays — others stay paused showing their
+            first decoded frame. Switching slides is a pure opacity
+            swap with zero unmount/remount. */}
+        {SLIDES.map((s, i) => (
+          s.type === 'video' ? (
+            <div
+              key={s.src}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                opacity: i === current ? 1 : 0,
+                pointerEvents: i === current ? 'auto' : 'none',
+                zIndex: i === current ? 3 : 0,
+                background: '#0a0e1a',
+              }}
+            >
+              <video
+                ref={(el) => { videoRefs.current[i] = el }}
+                src={s.src}
+                style={styles.media}
+                playsInline
+                preload="auto"
+                onEnded={onVideoEnded}
+              />
+            </div>
+          ) : null
+        ))}
+
         {SLIDES.map((s, i) => (
           s.type === 'html' ? (
             <div
