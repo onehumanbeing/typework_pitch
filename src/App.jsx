@@ -126,29 +126,42 @@ function PitchDeck() {
   const lastClickRef = useRef(0)
 
   /* ── preload all media on mount ──────────────────────── */
+  /* Tracks every slide: images, videos, AND html iframes.
+     Iframes call tickLoad via their onLoad handler, so loadDone
+     only becomes true after every iframe has fully rendered — this
+     prevents the jump-flash on Vercel where network latency matters. */
   const [loadProgress, setLoadProgress] = useState(0)
   const [loadDone, setLoadDone] = useState(false)
+  const loadedRef = useRef(0)
+  const loadedSetRef = useRef(new Set())
+
+  const tickLoad = useCallback((key) => {
+    if (loadedSetRef.current.has(key)) return
+    loadedSetRef.current.add(key)
+    loadedRef.current++
+    const progress = loadedRef.current / SLIDES.length
+    setLoadProgress(progress)
+    if (loadedRef.current >= SLIDES.length) {
+      setTimeout(() => setLoadDone(true), 400)
+    }
+  }, [])
 
   useEffect(() => {
-    const mediaSlides = SLIDES.filter(s => s.type === 'image' || s.type === 'video')
-    const total = mediaSlides.length
-    if (total === 0) { setLoadDone(true); return }
-    let loaded = 0
-    const tick = () => {
-      loaded++
-      setLoadProgress(loaded / total)
-      if (loaded >= total) setTimeout(() => setLoadDone(true), 400)
-    }
-    mediaSlides.forEach(s => {
+    SLIDES.forEach(s => {
       if (s.type === 'image') {
         const img = new Image()
-        img.onload = img.onerror = tick
+        const done = () => tickLoad(s.src)
+        img.onload = img.onerror = done
         img.src = s.src
-      } else {
-        fetch(s.src).then(tick).catch(tick)
+      } else if (s.type === 'video') {
+        fetch(s.src).then(() => tickLoad(s.src)).catch(() => tickLoad(s.src))
       }
+      // html iframes tick via their onLoad prop in the render tree
     })
-  }, [])
+    // Safety: never block forever — if something stalls, release after 12s
+    const safety = setTimeout(() => setLoadDone(true), 12000)
+    return () => clearTimeout(safety)
+  }, [tickLoad])
 
   /* ── iframe scaling to fit viewport ─────────────────── */
   const [iframeScale, setIframeScale] = useState(1)
@@ -365,6 +378,7 @@ function PitchDeck() {
                 title={`Slide ${i + 1}`}
                 sandbox="allow-same-origin"
                 scrolling="no"
+                onLoad={() => tickLoad(s.src)}
               />
               {/* Transparent overlay to capture clicks/prevent iframe stealing focus */}
               <div style={styles.iframeOverlay} />
