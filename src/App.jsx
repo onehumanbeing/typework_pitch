@@ -73,10 +73,10 @@ function LockScreen() {
 */
 
 const SLIDES = [
-  { type: 'video', src: '/videos/slide1.mp4' },
-  { type: 'video', src: '/videos/slide2.mp4' },
-  { type: 'video', src: '/videos/slide3.mp4' },
-  { type: 'video', src: '/videos/slide4.mp4' },
+  { type: 'video', src: '/videos/slide1.mp4', endFrame: '/endframes/video1.png' },
+  { type: 'video', src: '/videos/slide2.mp4', endFrame: '/endframes/video2.png' },
+  { type: 'video', src: '/videos/slide3.mp4', endFrame: '/endframes/video3.png' },
+  { type: 'video', src: '/videos/slide4.mp4', endFrame: '/endframes/video4.png' },
   { type: 'html',  src: '/html/slide_5_market_who_joins.html' },
   { type: 'html',  src: '/html/slide_meet_first_customer.html' },
   { type: 'html',  src: '/html/slide_what_typework_does.html' },
@@ -102,6 +102,12 @@ export default function App() {
 function PitchDeck() {
   const [current, setCurrent] = useState(0)
   const [videoState, setVideoState] = useState('poster')
+  /* overlayImage: when a video nears its end, we paint its endFrame
+     image on top of the whole slideWrapper to cover the browser's
+     end-of-video flash. Held persistent across slide transitions
+     until the next slide has time to mount, then cleared. */
+  const [overlayImage, setOverlayImage] = useState(null)
+  const overlayTimerRef = useRef(null)
   const videoRef = useRef(null)
   const containerRef = useRef(null)
 
@@ -155,6 +161,12 @@ function PitchDeck() {
         img.src = s.src
       } else if (s.type === 'video') {
         fetch(s.src).then(() => tickLoad(s.src)).catch(() => tickLoad(s.src))
+        // also warm the end-frame image so it paints instantly when the
+        // rAF loop shows it as an overlay at the end of the video
+        if (s.endFrame) {
+          const ef = new Image()
+          ef.src = s.endFrame
+        }
       }
       // html iframes tick via their onLoad prop in the render tree
     })
@@ -176,9 +188,19 @@ function PitchDeck() {
     return () => window.removeEventListener('resize', calcScale)
   }, [])
 
+  /* clear any lingering end-frame overlay (used by all nav paths) */
+  const clearOverlay = useCallback(() => {
+    if (overlayTimerRef.current) {
+      clearTimeout(overlayTimerRef.current)
+      overlayTimerRef.current = null
+    }
+    setOverlayImage(null)
+  }, [])
+
   /* ── navigation ─────────────────────────────────────── */
   const goNext = useCallback(() => {
     if (isVideo && videoState === 'poster') {
+      clearOverlay()
       setVideoState('playing')
       videoRef.current?.play()
       return
@@ -188,6 +210,7 @@ function PitchDeck() {
       if (now - lastClickRef.current < 500) {
         videoRef.current?.pause()
         if (current < TOTAL - 1) {
+          clearOverlay()
           setCurrent(c => c + 1)
           setVideoState('poster')
         }
@@ -196,24 +219,27 @@ function PitchDeck() {
       return
     }
     if (current < TOTAL - 1) {
+      clearOverlay()
       setCurrent(c => c + 1)
       setVideoState('poster')
     }
-  }, [current, isVideo, videoState])
+  }, [current, isVideo, videoState, clearOverlay])
 
   const goPrev = useCallback(() => {
     if (current > 0) {
+      clearOverlay()
       setCurrent(c => c - 1)
       setVideoState('poster')
     }
-  }, [current])
+  }, [current, clearOverlay])
 
   /* ── jump to slide: type number + Enter ──────────────── */
   const goTo = useCallback((n) => {
     const idx = Math.max(0, Math.min(n - 1, TOTAL - 1))
+    clearOverlay()
     setCurrent(idx)
     setVideoState('poster')
-  }, [])
+  }, [clearOverlay])
 
   /* ── keyboard (supports presentation clickers) ──────── */
   useEffect(() => {
@@ -279,11 +305,11 @@ function PitchDeck() {
     }
   }, [current])
 
-  /* ── pause every video ~0.3s before its end to avoid the
-         browser's end-of-video black flash. timeupdate is too
-         coarse (~4Hz), so we use requestAnimationFrame (~60Hz).
-         Applies to ALL videos: on the last one we stop on frame,
-         on earlier ones we advance to the next slide early. ──── */
+  /* ── pause every video ~0.3s before its end and paint its
+         endFrame image over the whole slideWrapper, so the browser's
+         end-of-video black flash is completely covered by a still
+         image. The overlay persists across the slide transition
+         until the next slide has time to mount. ──────────────── */
   useEffect(() => {
     if (SLIDES[current].type !== 'video') return
     const v = videoRef.current
@@ -298,11 +324,28 @@ function PitchDeck() {
       if (vid.duration && !isNaN(vid.duration) && vid.duration - vid.currentTime < 0.3) {
         handled = true
         vid.pause()
+
+        // Show the end-frame overlay immediately to cover the flash.
+        const endFrame = SLIDES[current].endFrame
+        if (endFrame) setOverlayImage(endFrame)
+
         if (current === LAST_VIDEO_INDEX) {
           setVideoState('ended')
+          // Last video: keep overlay visible as the final still
+          // (cleared when user navigates away).
         } else if (current < TOTAL - 1) {
-          setCurrent(c => c + 1)
-          setVideoState('poster')
+          // Give the overlay one paint cycle to appear, then advance.
+          // Keep the overlay up for ~500ms so the next slide has time
+          // to fully mount and decode its first frame.
+          requestAnimationFrame(() => {
+            setCurrent(c => c + 1)
+            setVideoState('poster')
+            if (overlayTimerRef.current) clearTimeout(overlayTimerRef.current)
+            overlayTimerRef.current = setTimeout(() => {
+              setOverlayImage(null)
+              overlayTimerRef.current = null
+            }, 500)
+          })
         }
         rafId = null
         return
@@ -423,6 +466,16 @@ function PitchDeck() {
             </div>
           ) : null
         ))}
+
+        {/* End-frame still overlay — covers browser end-of-video flash */}
+        {overlayImage && (
+          <img
+            src={overlayImage}
+            alt=""
+            draggable={false}
+            style={styles.endFrameOverlay}
+          />
+        )}
       </div>
 
       {/* Progress bar */}
@@ -553,6 +606,16 @@ const styles = {
     position: 'absolute',
     inset: 0,
     zIndex: 1,
+  },
+  endFrameOverlay: {
+    position: 'absolute',
+    inset: 0,
+    width: '100%',
+    height: '100%',
+    objectFit: 'contain',
+    zIndex: 4,
+    pointerEvents: 'none',
+    userSelect: 'none',
   },
   progressTrack: {
     position: 'absolute',
