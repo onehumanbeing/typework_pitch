@@ -279,22 +279,31 @@ function PitchDeck() {
     }
   }, [current])
 
-  /* ── pause last video just before end to avoid browser
-         end-of-video flash. timeupdate fires at ~4Hz which is too
-         coarse (the video can end between two fires), so we use
-         requestAnimationFrame at ~60Hz for precise timing. ──── */
+  /* ── pause every video ~0.3s before its end to avoid the
+         browser's end-of-video black flash. timeupdate is too
+         coarse (~4Hz), so we use requestAnimationFrame (~60Hz).
+         Applies to ALL videos: on the last one we stop on frame,
+         on earlier ones we advance to the next slide early. ──── */
   useEffect(() => {
-    if (current !== LAST_VIDEO_INDEX) return
+    if (SLIDES[current].type !== 'video') return
     const v = videoRef.current
     if (!v) return
 
     let rafId = null
+    let handled = false
     const check = () => {
       const vid = videoRef.current
-      if (!vid || vid.paused || vid.ended) { rafId = null; return }
+      if (!vid || handled) { rafId = null; return }
+      if (vid.paused || vid.ended) { rafId = null; return }
       if (vid.duration && !isNaN(vid.duration) && vid.duration - vid.currentTime < 0.3) {
+        handled = true
         vid.pause()
-        setVideoState('ended')
+        if (current === LAST_VIDEO_INDEX) {
+          setVideoState('ended')
+        } else if (current < TOTAL - 1) {
+          setCurrent(c => c + 1)
+          setVideoState('poster')
+        }
         rafId = null
         return
       }
