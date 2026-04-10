@@ -114,6 +114,20 @@ function PitchDeck() {
      with zero unmount/remount so there is no frame gap. */
   const videoRefs = useRef([])
   const getCurVideo = () => videoRefs.current[current] || null
+
+  const showEndFrame = (vid) => {
+    if (!vid) return
+    vid.style.opacity = '0'
+    const bg = vid.parentElement?.querySelector('img')
+    if (bg) bg.style.opacity = '1'
+  }
+
+  const hideEndFrame = (vid) => {
+    if (!vid) return
+    vid.style.opacity = '1'
+    const bg = vid.parentElement?.querySelector('img')
+    if (bg) bg.style.opacity = '0'
+  }
   const containerRef = useRef(null)
 
   const [jumpInput, setJumpInput] = useState('')
@@ -208,7 +222,7 @@ function PitchDeck() {
       setVideoState('playing')
       const v = videoRefs.current[current]
       if (v) {
-        v.style.opacity = '1'
+        hideEndFrame(v)
         try { v.currentTime = 0 } catch (_) {}
         // Keep overlay up until the video is actually rendering.
         const onPlaying = () => {
@@ -314,8 +328,7 @@ function PitchDeck() {
 
   /* ── video ended ────────────────────────────────────── */
   const onVideoEnded = useCallback(() => {
-    const v = videoRefs.current[current]
-    if (v) v.style.opacity = '0'
+    showEndFrame(videoRefs.current[current])
 
     const endFrame = SLIDES[current]?.endFrame
     if (endFrame) setOverlayImage(endFrame)
@@ -340,7 +353,7 @@ function PitchDeck() {
 
     // When landing on a video slide (e.g. via arrow / jump), reset to
     // its first frame and ensure the video element is visible.
-    v.style.opacity = '1'
+    hideEndFrame(v)
     if (v.paused) {
       try { v.currentTime = 0 } catch (_) {}
     }
@@ -352,17 +365,17 @@ function PitchDeck() {
       if (!vid || handled) { rafId = null; return }
       if (vid.ended) {
         handled = true
-        vid.style.opacity = '0'
+        showEndFrame(vid)
         const endFrame = SLIDES[current].endFrame
         if (endFrame) setOverlayImage(endFrame)
         rafId = null
         return
       }
       if (vid.paused) { rafId = null; return }
-      if (vid.duration && !isNaN(vid.duration) && vid.duration - vid.currentTime < 0.5) {
+      if (vid.duration && !isNaN(vid.duration) && vid.duration - vid.currentTime < 0.1) {
         handled = true
         vid.pause()
-        vid.style.opacity = '0'
+        showEndFrame(vid)
 
         // Show the end-frame overlay immediately to cover the flash.
         const endFrame = SLIDES[current].endFrame
@@ -668,6 +681,7 @@ const styles = {
     objectFit: 'contain',
     userSelect: 'none',
     pointerEvents: 'none',
+    opacity: 0,
   },
   iframeContainer: {
     position: 'relative',
