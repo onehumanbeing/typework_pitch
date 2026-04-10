@@ -315,6 +315,9 @@ function PitchDeck() {
 
   /* ── video ended ────────────────────────────────────── */
   const onVideoEnded = useCallback(() => {
+    const endFrame = SLIDES[current]?.endFrame
+    if (endFrame) setOverlayImage(endFrame)
+
     if (current === LAST_VIDEO_INDEX) {
       setVideoState('ended')
     } else if (current < TOTAL - 1) {
@@ -344,8 +347,15 @@ function PitchDeck() {
     const check = () => {
       const vid = videoRefs.current[current]
       if (!vid || handled) { rafId = null; return }
-      if (vid.paused || vid.ended) { rafId = null; return }
-      if (vid.duration && !isNaN(vid.duration) && vid.duration - vid.currentTime < 0.3) {
+      if (vid.ended) {
+        handled = true
+        const endFrame = SLIDES[current].endFrame
+        if (endFrame) setOverlayImage(endFrame)
+        rafId = null
+        return
+      }
+      if (vid.paused) { rafId = null; return }
+      if (vid.duration && !isNaN(vid.duration) && vid.duration - vid.currentTime < 0.5) {
         handled = true
         vid.pause()
 
