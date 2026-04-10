@@ -64,13 +64,20 @@ We go straight to the boss. This is a top-down decision. The boss feels the pain
 Slide 6 — Meet Our First Customer
 ────────────────────────────────────
 
-Meet Mark. He runs a service business in Hong Kong — 5 to 50 staff, swimming coaches, yoga studios, catering.
-His entire operating system? WhatsApp, Instagram DMs, and Excel.
-At 8am, bookings flood in from three channels — no unified inbox. He replies one by one. Some get missed.
-By 10am, he's manually entering bookings into Excel. Wrong dates, duplicate rows. Three bookings lost.
-At 2pm, staff asks about the schedule — he scrolls through five group chats. No single source of truth.
-Month-end? Payroll and invoices don't match. Four hours checking. Money already out the door.
-At 11pm, he's still replying. Tomorrow will be the same.
+Let's meet Mark. He runs a yoga studio in Hong Kong with 10 coaches and employees on his team.
+What's his entire operating system? WhatsApp, Instagram, Excel, and his own brain.
+
+In the morning, Mark's phone starts ringing nonstop.
+Users from different apps are reaching out to him: some asking questions, some renewing subscriptions, some complaining about coaches, and others just chatting.
+After handling everything, Mark has to open his massive Excel file — with tons of columns and sheets — to manage today's bookings.
+There are typos, duplicated rows, incorrect times, and sometimes changes aren't even saved.
+
+Earlier, we said people and actions are killers. Now let's talk about decisions.
+Any unexpected situation can instantly create a huge amount of extra work for Mark.
+In the afternoon, one coach suddenly asks to take leave. So Mark has to reopen that same messy Excel again, reschedule, and coordinate replacements for clients.
+Then he jumps back into his messaging apps — only to realize he can't even find some of the conversations anymore.
+
+Life is hard — and tomorrow will be the same for Mark.
 No system. No automation. No way out. That's who we're building for.
 
 
