@@ -279,15 +279,39 @@ function PitchDeck() {
     }
   }, [current])
 
-  /* ── pause last video just before end to avoid flash ── */
-  const onVideoTimeUpdate = useCallback(() => {
+  /* ── pause last video just before end to avoid browser
+         end-of-video flash. timeupdate fires at ~4Hz which is too
+         coarse (the video can end between two fires), so we use
+         requestAnimationFrame at ~60Hz for precise timing. ──── */
+  useEffect(() => {
     if (current !== LAST_VIDEO_INDEX) return
     const v = videoRef.current
-    if (!v || !v.duration || isNaN(v.duration)) return
-    if (v.paused) return
-    if (v.duration - v.currentTime < 0.15) {
-      v.pause()
-      setVideoState('ended')
+    if (!v) return
+
+    let rafId = null
+    const check = () => {
+      const vid = videoRef.current
+      if (!vid || vid.paused || vid.ended) { rafId = null; return }
+      if (vid.duration && !isNaN(vid.duration) && vid.duration - vid.currentTime < 0.3) {
+        vid.pause()
+        setVideoState('ended')
+        rafId = null
+        return
+      }
+      rafId = requestAnimationFrame(check)
+    }
+
+    const startCheck = () => {
+      if (rafId) cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(check)
+    }
+
+    v.addEventListener('play', startCheck)
+    if (!v.paused) startCheck()
+
+    return () => {
+      v.removeEventListener('play', startCheck)
+      if (rafId) cancelAnimationFrame(rafId)
     }
   }, [current])
 
@@ -316,7 +340,6 @@ function PitchDeck() {
           style={styles.media}
           playsInline
           preload="auto"
-          onTimeUpdate={onVideoTimeUpdate}
           onEnded={onVideoEnded}
         />
       )
